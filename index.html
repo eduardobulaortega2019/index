@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomoNow Chat - Asistente Inteligente</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/+esm"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #f0fdfa 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .suggestions-title {
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .suggestion-btn {
+            width: 100%;
+            text-align: left;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            color: #374151;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .suggestion-btn:hover {
+            background: #e0f2fe;
+            color: #0369a1;
+            border-left-color: #0891b2;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            color: white;
+            padding: 20px 32px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot .message-content {
+            background: #f3f4f6;
+            color: #1f2937;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9ca3af;
+            animation: typingAnimation 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .input-area {
+            padding: 20px 32px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #0891b2;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .chat-container {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 16px;
+            }
+
+            .input-area {
+                padding: 16px;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        .sidebar-content::-webkit-scrollbar,
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-track,
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb,
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb:hover,
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">💬</div>
+                    <div class="logo-text">
+                        <h1>DomoNow</h1>
+                        <p>Asistente IA</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="suggestions-title">Preguntas Rápidas</div>
+                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son los 4 módulos principales de DomoNow?')">
+                    ¿Cuáles son los módulos principales?
+                </button>
+                <button class="suggestion-btn" onclick="setQuestion('¿Cómo funciona la aplicación móvil para técnicos?')">
+                    Aplicación móvil para técnicos
+                </button>
+                <button class="suggestion-btn" onclick="setQuestion('¿Qué puede hacer un inquilino en el portal?')">
+                    Portal de inquilinos
+                </button>
+                <button class="suggestion-btn" onclick="setQuestion('¿Cómo se automatizan los procesos?')">
+                    Automatización de procesos
+                </button>
+                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son las integraciones disponibles?')">
+                    Integraciones disponibles
+                </button>
+                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son los objetivos principales de DomoNow?')">
+                    Objetivos del producto
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <p>🚀 Powered by Claude AI</p>
+                <p style="margin-top: 8px;">Version 1.0</p>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main">
+            <div class="header">
+                <h2>🤖 Asistente DomoNow</h2>
+                <p>Hola, soy tu asistente inteligente. Pregúntame sobre DomoNow</p>
+            </div>
+
+            <div class="chat-container" id="chatContainer">
+                <div class="message bot">
+                    <div class="message-content">
+                        Hola 👋 Soy el asistente DomoNow. Puedo responder todas tus preguntas sobre la plataforma de gestión de propiedades. ¿Qué necesitas saber?
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="Escribe tu pregunta aquí..."
+                        onkeypress="if(event.key === 'Enter') sendMessage()"
+                    >
+                    <button class="send-btn" onclick="sendMessage()" id="sendBtn">✉️</button>
+                </div>
+                <div class="input-hint">
+                    💡 Pregunta sobre módulos, características, integraciones o cualquier aspecto de DomoNow
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de respuestas sobre DomoNow
+        const knowledgeBase = {
+            modulos: {
+                keywords: ['módulo', 'módulos', 'características principales', 'que tiene'],
+                response: `DomoNow tiene 4 módulos principales:
+
+**1. Gestión Central** 📊
+- Panel de cartera con métricas consolidadas
+- Gestión de arrendamientos e inquilinos
+- Integración contable y ERP
+- Órdenes de trabajo de mantenimiento
+- Centro de comunicaciones unificado
+- Gestión de documentos y contratos
+- Reportes y análisis avanzado
+
+**2. Aplicación Móvil para Campo** 📱
+- Gestión de tareas para técnicos
+- Navegación y mapas
+- Listas de verificación personalizables
+- Comunicación en tiempo real
+- Subida de fotos y videos
+- Funciona sin conexión
+
+**3. Portal de Inquilinos** 🏠
+- Pago de renta (múltiples métodos)
+- Solicitudes de mantenimiento
+- Acceso a documentos
+- Mensajería con administrador
+- Recordatorios automáticos
+
+**4. Automatización y Alertas** ⚡
+- Flujos de trabajo inteligentes
+- Tareas recurrentes automáticas
+- Centro de alertas centralizado
+- Control de acceso por roles
+- Registros de auditoría completos`
+            },
+            
+            app_movil: {
+                keywords: ['aplicación móvil', 'app móvil', 'técnico', 'campo', 'smartphone'],
+                response: `La Aplicación Móvil DomoNow es perfecta para técnicos de campo:
+
+**Características Principales:**
+✅ **Gestión de Tareas** - Reciben órdenes de trabajo priorizadas
+✅ **Navegación GPS** - Mapas, rutas optimizadas e integración de cerraduras
+✅ **Listas de Verificación** - Inspecciones paso a paso
+✅ **Fotos y Videos** - Documentan el trabajo completado
+✅ **Comunicación** - Chat con oficina e inquilinos
+✅ **Modo Offline** - Funciona sin internet, sincroniza después
+
+**Beneficios:**
+- Aumenta eficiencia de técnicos
+- Reduce errores de documentación
+- Mejor comunicación en terreno
+- Respuestas más rápidas a inquilinos`
+            },
+
+            portal_inquilinos: {
+                keywords: ['inquilino', 'portal', 'pagar renta', 'mantenimiento', 'residente'],
+                response: `El Portal de Inquilinos permite una experiencia moderna y completa:
+
+**Lo que Pueden Hacer:**
+💰 **Pagos de Renta**
+- Múltiples métodos de pago
+- Pago automático
+- Historial de pagos
+
+🔧 **Mantenimiento**
+- Reportar problemas fácilmente
+- Seguimiento de solicitudes
+- Chat con administrador
+
+📄 **Documentos**
+- Acceso a contrato de arrendamiento
+- Documentos importantes
+- Aviso de renovaciones
+
+💬 **Comunicación**
+- Mensajería directa
+- Notificaciones automáticas
+- Recordatorios de pagos
+
+**Impacto:**
+- Reduce morosidad en 30%
+- Acelera cobro de renta
+- Mayor satisfacción de inquilinos`
+            },
+
+            automatizacion: {
+                keywords: ['automatización', 'automático', 'flujo de trabajo', 'reglas', 'alertas'],
+                response: `La Automatización de DomoNow te ahorra tiempo y errores:
+
+**Cómo Funciona:**
+🤖 **Flujos de Trabajo Automáticos**
+- Cuando un inquilino reporta un problema → se crea automáticamente una orden de trabajo
+- Se asigna al técnico correcto
+- Se envía confirmación al inquilino
+
+📅 **Tareas Recurrentes**
+- Inspecciones trimestrales programadas automáticamente
+- Mantenimiento preventivo planificado
+- Renovaciones de contrato alertadas
+
+🔔 **Centro de Alertas**
+- Morosidad en pagos
+- Mantenimiento vencido
+- Plazos legales
+- Seguros próximos a vencer
+
+**Beneficios:**
+✅ Reduce trabajo manual en 40%
+✅ Previene problemas antes de que ocurran
+✅ Cumplimiento normativo automático
+✅ Respuestas más rápidas`
+            },
+
+            integraciones: {
+                keywords: ['integración', 'integraciones', 'conectar', 'sistemas', 'terceros', 'api'],
+                response: `DomoNow se integra con múltiples sistemas:
+
+**Integraciones Disponibles:**
+
+📊 **Contabilidad & ERP**
+- Sistemas contables
+- Software financiero
+- Plataformas ERP
+
+💳 **Pagos**
+- Transferencias ACH
+- Tarjetas de crédito
+- Billeteras digitales
+- Pagos móviles
+
+🏠 **Tecnología Inteligente**
+- Cerraduras inteligentes
+- Sensores de IoT
+- Termostatos inteligentes
+- Sensores de fugas
+
+📱 **Comunicación**
+- SMS y WhatsApp
+- Correo electrónico
+- Notificaciones push
+
+🔗 **Terceros**
+- Sistemas CRM
+- Servicios legales
+- Seguros
+- Redes de mantenimiento
+
+**Ventaja:**
+Una plataforma única conectada con todo lo que necesitas operar.`
+            },
+
+            objetivos: {
+                keywords: ['objetivo', 'objetivos', 'para qué', 'propósito', 'meta'],
+                response: `Los Objetivos Principales de DomoNow:
+
+**1. Digitalizar las Operaciones** 📱
+Pasar de procesos manuales a plataforma integrada
+
+**2. Automatizar Todo** ⚡
+Eliminar tareas repetitivas y errores humanos
+
+**3. Mejorar Relaciones con Inquilinos** 💞
+Comunicación clara y respuestas rápidas
+
+**4. Optimizar Campo** 🚗
+Despacho dinámico y técnicos equipados
+
+**5. Escalar sin Límites** 📈
+Desde 5 propiedades hasta 500+
+
+**6. Multilingüe** 🌍
+Soporta español e inglés (expandible)
+
+**Resultado:**
+Administradores más eficientes, inquilinos más satisfechos, menos costos.`
+            },
+
+            general: {
+                keywords: ['domanow', 'qué es', 'quién', 'cómo funciona'],
+                response: `DomoNow es una plataforma integral de gestión de propiedades creada por Ofima/Skypex Corp.
+
+**En Pocas Palabras:**
+Una aplicación que unifica TODO lo que necesita un administrador de propiedades:
+- Cobro de renta
+- Mantenimiento
+- Comunicación con inquilinos
+- Reportes y análisis
+- Control desde cualquier dispositivo
+
+**Dirigido A:**
+✅ Administradores de propiedades
+✅ Técnicos de mantenimiento
+✅ Inquilinos
+✅ Propietarios
+✅ Proveedores
+
+**Disponible En:**
+🌐 Plataforma Web
+📱 Aplicación Móvil (iOS/Android)
+⌨️ Interfaz para tablets
+
+¿Qué aspecto específico te interesa saber más?`
+            }
+        };
+
+        // Función para encontrar la respuesta correcta
+        function findAnswer(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            for (const [key, data] of Object.entries(knowledgeBase)) {
+                if (data.keywords && data.keywords.some(keyword => lowerQuestion.includes(keyword))) {
+                    return data.response;
+                }
+            }
+            
+            return `Entiendo tu pregunta sobre DomoNow. Para una respuesta más precisa, aquí están los temas que puedo ayudarte:
+
+📚 **Puedo explicarte sobre:**
+- Los 4 módulos principales
+- La aplicación móvil para técnicos
+- El portal de inquilinos
+- La automatización de procesos
+- Las integraciones disponibles
+- Los objetivos del producto
+
+¿Cuál de estos temas te interesa?`;
+        }
+
+        // Función para enviar mensaje
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Mostrar mensaje del usuario
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Mostrar indicador de escritura
+            showTypingIndicator();
+            
+            // Simular delay y obtener respuesta
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = findAnswer(message);
+                addMessage(response, 'bot');
+            }, 1000);
+        }
+
+        // Agregar mensaje al chat
+        function addMessage(text, sender) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            // Auto-scroll
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Indicador de escritura
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            messageDiv.id = 'typingIndicator';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'typing-indicator';
+            contentDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        // Establecer pregunta sugerida
+        function setQuestion(question) {
+            document.getElementById('messageInput').value = question;
+            document.getElementById('messageInput').focus();
+            sendMessage();
+        }
+
+        // Focus en input al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('messageInput').focus();
+        });
+    </script>
+</body>
+</html>
