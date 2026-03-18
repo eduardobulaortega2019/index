@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R360 - Asistente de Consulta Inteligente</title>
+    <title>R360 - Consulta Inteligente IA</title>
     <style>
         * {
             margin: 0;
@@ -149,6 +149,7 @@
             display: flex;
             gap: 12px;
             animation: slideIn 0.3s ease;
+            align-items: flex-start;
         }
 
         @keyframes slideIn {
@@ -186,22 +187,6 @@
             background: #f3f4f6;
             color: #1f2937;
             border-bottom-left-radius: 4px;
-        }
-
-        .answer-badge {
-            background: #dbeafe;
-            border-left: 4px solid #0891b2;
-            padding: 12px;
-            margin-top: 8px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #0c4a6e;
-        }
-
-        .answer-badge strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #0891b2;
         }
 
         .typing-indicator {
@@ -292,6 +277,13 @@
             margin-top: 12px;
         }
 
+        .doc-source {
+            font-size: 11px;
+            color: #0891b2;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
@@ -339,7 +331,7 @@
                     <div class="logo-icon">📚</div>
                     <div class="logo-text">
                         <h1>R360</h1>
-                        <p>Consulta Inteligente</p>
+                        <p>Consulta IA</p>
                     </div>
                 </div>
             </div>
@@ -349,37 +341,31 @@
             </div>
 
             <div class="sidebar-footer">
-                <p>🚀 Búsqueda Inteligente en Documentos</p>
-                <p style="margin-top: 8px;">Información en tiempo real</p>
+                <p>🚀 Búsqueda Inteligente + IA</p>
+                <p style="margin-top: 8px;">Respuestas Conversacionales</p>
             </div>
         </div>
 
         <div class="main">
             <div class="header">
-                <h2>🤖 Asistente de Consulta R360</h2>
-                <p>Busca información en Servicio, Ventas, Mercadeo, Fabrica, Administrador</p>
+                <h2>🤖 Asistente R360 Inteligente</h2>
+                <p>Pregúntame natural sobre Servicio, Ventas, Mercadeo, Fabrica o Administrador</p>
             </div>
 
-            <div class="chat-container" id="chatContainer">
-                <div class="message bot">
-                    <div class="message-content">
-                        Hola 👋 Soy tu asistente de búsqueda inteligente. Puedo extraer información de todos tus documentos R360. ¿Qué necesitas saber?
-                    </div>
-                </div>
-            </div>
+            <div class="chat-container" id="chatContainer"></div>
 
             <div class="input-area">
                 <div class="input-wrapper">
                     <input 
                         type="text" 
                         id="messageInput" 
-                        placeholder="Ej: ¿Cuáles son las fases del servicio?"
+                        placeholder="Cuéntame sobre las fases del servicio..."
                         onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
                     <button class="send-btn" onclick="sendMessage()" id="sendBtn">✉️</button>
                 </div>
                 <div class="input-hint">
-                    💡 Haz preguntas naturales y buscaré en todos tus documentos
+                    💡 Búsqueda automática en documentos + respuesta inteligente
                 </div>
             </div>
         </div>
@@ -388,26 +374,24 @@
     <script>
         let documentosData = null;
 
-        // Cargar metadata con Q&A pairs desde GitHub
+        // Cargar metadata desde GitHub
         async function loadDocumentsData() {
             try {
-                // Intentar cargar desde el repositorio index
                 const response = await fetch('https://raw.githubusercontent.com/eduardobulaortega2019/index/main/documentos-metadata.json');
                 if (response.ok) {
                     documentosData = await response.json();
                 } else {
-                    // Si no existe, usar valores por defecto
                     documentosData = getDefaultData();
                 }
             } catch (error) {
-                console.log('Usando datos locales por defecto');
                 documentosData = getDefaultData();
             }
 
             cargarPreguntasRapidas();
+            mostrarSaludo();
         }
 
-        // Datos por defecto con Q&A pairs
+        // Datos por defecto
         function getDefaultData() {
             return {
                 "documentos": [
@@ -417,18 +401,18 @@
                         "qa_pairs": [
                             {
                                 "pregunta": "¿Cuáles son las fases del servicio?",
-                                "respuesta": "El proceso de servicio R360 tiene las siguientes fases:\n\n1. **Planificación** - Análisis de necesidades del cliente\n2. **Ejecución** - Implementación del servicio\n3. **Control de Calidad** - Validación de estándares\n4. **Entrega** - Presentación al cliente\n5. **Seguimiento** - Asistencia post-servicio\n\nCada fase tiene procedimientos específicos y estándares de calidad definidos.",
-                                "palabras_clave": ["fases", "etapas", "proceso"]
+                                "respuesta": "El proceso de servicio R360 tiene las siguientes fases:\n\n1. **Planificación** - Análisis de necesidades del cliente\n2. **Ejecución** - Implementación del servicio\n3. **Control de Calidad** - Validación de estándares\n4. **Entrega** - Presentación al cliente\n5. **Seguimiento** - Asistencia post-servicio",
+                                "palabras_clave": ["fases", "etapas", "proceso", "planificación", "ejecución", "calidad", "entrega", "seguimiento", "fase de planificación", "fase de ejecución"]
                             },
                             {
                                 "pregunta": "¿Cuál es el proceso de atención al cliente?",
-                                "respuesta": "El proceso de atención al cliente en R360 Servicio incluye:\n\n✓ Recepción de solicitud\n✓ Análisis de requerimiento\n✓ Asignación de recursos\n✓ Ejecución del servicio\n✓ Validación con cliente\n✓ Cierre y seguimiento\n\nTiempo de respuesta: SLA de 24 horas para solicitudes estándar.",
-                                "palabras_clave": ["atención", "cliente", "proceso"]
+                                "respuesta": "El proceso de atención al cliente en R360 Servicio incluye:\n\n✓ Recepción de solicitud\n✓ Análisis de requerimiento\n✓ Asignación de recursos\n✓ Ejecución del servicio\n✓ Validación con cliente\n✓ Cierre y seguimiento\n\nTiempo de respuesta: SLA de 24 horas",
+                                "palabras_clave": ["atención", "cliente", "proceso", "servicio", "sla", "respuesta", "solicitud"]
                             },
                             {
                                 "pregunta": "¿Cuáles son los estándares de calidad?",
-                                "respuesta": "Los estándares de calidad de R360 Servicio incluyen:\n\n📊 **Precisión:** 99.5% en entregas\n⏱️ **Puntualidad:** 100% dentro del SLA\n✓ **Conformidad:** Cumplimiento de especificaciones\n🔍 **Auditoría:** Revisiones periódicas\n📝 **Documentación:** Registro completo de actividades",
-                                "palabras_clave": ["calidad", "estándares", "normas"]
+                                "respuesta": "Los estándares de calidad de R360 Servicio incluyen:\n\n📊 **Precisión:** 99.5% en entregas\n⏱️ **Puntualidad:** 100% dentro del SLA\n✓ **Conformidad:** Cumplimiento de especificaciones\n🔍 **Auditoría:** Revisiones periódicas",
+                                "palabras_clave": ["calidad", "estándares", "normas", "sla", "precisión", "puntualidad", "conformidad"]
                             }
                         ]
                     },
@@ -438,13 +422,13 @@
                         "qa_pairs": [
                             {
                                 "pregunta": "¿Cómo es el proceso de ventas?",
-                                "respuesta": "El proceso de ventas R360 consta de:\n\n1. **Prospección** - Identificación de leads\n2. **Contacto inicial** - Primera llamada o reunión\n3. **Presentación** - Demostración del producto/servicio\n4. **Propuesta** - Envío de cotización personalizada\n5. **Negociación** - Ajuste de términos\n6. **Cierre** - Firma de contrato\n7. **Implementación** - Inicio del servicio\n\nPipeline promedio: 30-45 días",
-                                "palabras_clave": ["proceso", "etapas", "venta", "ventas"]
+                                "respuesta": "El proceso de ventas R360 consta de:\n\n1. **Prospección** - Identificación de leads\n2. **Contacto inicial** - Primera llamada o reunión\n3. **Presentación** - Demostración del producto\n4. **Propuesta** - Envío de cotización\n5. **Negociación** - Ajuste de términos\n6. **Cierre** - Firma de contrato\n7. **Implementación** - Inicio del servicio",
+                                "palabras_clave": ["proceso", "etapas", "venta", "ventas", "prospección", "contacto", "propuesta", "negociación", "cierre", "implementación"]
                             },
                             {
                                 "pregunta": "¿Cómo se cierra una venta?",
-                                "respuesta": "Para cerrar una venta exitosa en R360:\n\n✓ Confirmar necesidades del cliente\n✓ Presentar propuesta clara y competitiva\n✓ Resolver objeciones\n✓ Establecer términos de pago\n✓ Preparar documentación\n✓ Obtener firma de autorizado\n✓ Confirmar detalles de implementación\n\nFactores clave: Comunicación clara, propuesta personalizada, seguimiento consistente",
-                                "palabras_clave": ["cierre", "venta", "negociación"]
+                                "respuesta": "Para cerrar una venta exitosa:\n\n✓ Confirmar necesidades del cliente\n✓ Presentar propuesta clara\n✓ Resolver objeciones\n✓ Establecer términos de pago\n✓ Preparar documentación\n✓ Obtener firma\n✓ Confirmar detalles de implementación",
+                                "palabras_clave": ["cierre", "venta", "negociación", "firma", "contrato", "términos", "cerrar"]
                             }
                         ]
                     },
@@ -454,8 +438,8 @@
                         "qa_pairs": [
                             {
                                 "pregunta": "¿Cuál es la estrategia de mercadeo?",
-                                "respuesta": "Estrategia de Mercadeo R360:\n\n🎯 **Posicionamiento:** Lider en soluciones empresariales\n👥 **Público Objetivo:** Empresas B2B (50-1000 empleados)\n📱 **Canales:** Digital (50%), Presencial (30%), Networking (20%)\n📊 **Campañas:** Lead generation, Awareness, Retention\n💡 **Mensajería:** ROI, Eficiencia, Transformación\n\nPresupuesto anual: $150,000 USD",
-                                "palabras_clave": ["estrategia", "mercadeo", "marketing"]
+                                "respuesta": "Estrategia de Mercadeo R360:\n\n🎯 **Posicionamiento:** Lider en soluciones empresariales\n👥 **Público Objetivo:** Empresas B2B (50-1000 empleados)\n📱 **Canales:** Digital (50%), Presencial (30%), Networking (20%)\n📊 **Campañas:** Lead generation, Awareness, Retention",
+                                "palabras_clave": ["estrategia", "mercadeo", "marketing", "campaña", "posicionamiento", "público", "canales", "digital"]
                             }
                         ]
                     },
@@ -465,8 +449,8 @@
                         "qa_pairs": [
                             {
                                 "pregunta": "¿Cómo funciona la producción?",
-                                "respuesta": "Proceso de Producción R360:\n\n1. **Recepción de Orden** - Planning & Scheduling\n2. **Abastecimiento** - Compra de materiales\n3. **Preparación** - Setup de línea\n4. **Fabricación** - Proceso manufacturero\n5. **QC Intermedio** - Inspección en proceso\n6. **Acabado** - Embalaje y etiquetado\n7. **QC Final** - Inspección 100%\n8. **Despacho** - Entrega a cliente\n\nCapacidad: 500 unidades/día",
-                                "palabras_clave": ["producción", "manufactura", "proceso"]
+                                "respuesta": "Proceso de Producción R360:\n\n1. **Recepción de Orden** - Planning\n2. **Abastecimiento** - Compra de materiales\n3. **Preparación** - Setup de línea\n4. **Fabricación** - Proceso manufacturero\n5. **QC Intermedio** - Inspección\n6. **Acabado** - Embalaje\n7. **QC Final** - Inspección 100%\n8. **Despacho** - Entrega",
+                                "palabras_clave": ["producción", "manufactura", "proceso", "fabrica", "orden", "materiales", "calidad", "despacho", "fabricación"]
                             }
                         ]
                     },
@@ -476,8 +460,8 @@
                         "qa_pairs": [
                             {
                                 "pregunta": "¿Cómo gestiono propiedades?",
-                                "respuesta": "Gestión de Propiedades en Super Administrador:\n\n📋 **Registro:** Información completa de propiedad\n👤 **Inquilinos:** Perfiles, contratos, documentación\n💰 **Alquiler:** Cobranza, estados de pago, recordatorios\n🔧 **Mantenimiento:** Solicitudes, órdenes de trabajo\n📊 **Reportes:** Ocupación, ingresos, gastos, tendencias\n\nCapacidad: Unlimited propiedades",
-                                "palabras_clave": ["gestión", "propiedades", "administración"]
+                                "respuesta": "Gestión de Propiedades:\n\n📋 **Registro:** Información de propiedad\n👤 **Inquilinos:** Perfiles, contratos\n💰 **Alquiler:** Cobranza, pagos, recordatorios\n🔧 **Mantenimiento:** Solicitudes, órdenes\n📊 **Reportes:** Ocupación, ingresos, gastos",
+                                "palabras_clave": ["gestión", "propiedades", "administración", "inquilino", "alquiler", "cobranza", "mantenimiento"]
                             }
                         ]
                     }
@@ -490,6 +474,19 @@
                     "¿Cómo gestiono propiedades?"
                 ]
             };
+        }
+
+        // Mostrar saludo inicial (estilo paisa)
+        function mostrarSaludo() {
+            const saludos = [
+                "¡Ey, bienvenido! Soy su asistente R360. Cuénteme qué necesita, que yo le ayudo de una.",
+                "¿Qué más, parcero? Aquí ando para ayudarle en lo que necesite de R360.",
+                "¡Hola! Soy el asistente de consulta R360. Pregúnteme lo que quiera y le cuento al toque.",
+                "Hermano, yo le ayudo con todo lo de R360. ¿Qué necesita saber hoy?"
+            ];
+            
+            const saludo = saludos[Math.floor(Math.random() * saludos.length)];
+            addMessage(saludo, 'bot');
         }
 
         // Cargar preguntas rápidas
@@ -509,8 +506,8 @@
             });
         }
 
-        // Buscar respuesta en Q&A pairs
-        function buscarRespuesta(pregunta) {
+        // Buscar documento relevante
+        function buscarDocumento(pregunta) {
             const preguntaLower = pregunta.toLowerCase();
             let mejorCoincidencia = null;
             let maxCoincidencias = 0;
@@ -526,12 +523,40 @@
 
                     if (coincidencias > maxCoincidencias) {
                         maxCoincidencias = coincidencias;
-                        mejorCoincidencia = { doc, qa };
+                        mejorCoincidencia = { doc, qa, coincidencias };
                     }
                 });
             });
 
             return mejorCoincidencia;
+        }
+
+        // Generar respuesta conversacional
+        function generarRespuestaConversacional(pregunta, contexto) {
+            const palabrasIniciales = [
+                "Dale, ahí voy. ",
+                "Claro que sí. ",
+                "Ey, acá está. ",
+                "Vea, esto es lo que tengo: ",
+                "Perfecto, le cuento: ",
+                "Listo, escúcheme: "
+            ];
+
+            const conectores = [
+                "\nBasado en los documentos R360, ",
+                "\nEsto es lo que dice el documento: ",
+                "\nSegún la información que tenemos, ",
+                "\nAcá está la información que necesita: "
+            ];
+
+            const inicio = palabrasIniciales[Math.floor(Math.random() * palabrasIniciales.length)];
+            const conector = conectores[Math.floor(Math.random() * conectores.length)];
+
+            if (contexto) {
+                return inicio + conector + contexto;
+            } else {
+                return "Hmm, eso sí es una buena pregunta, pero no me aparece en los libros que tengo. ¿Me pregunta de otra cosa?";
+            }
         }
 
         // Enviar mensaje
@@ -548,18 +573,35 @@
             
             setTimeout(() => {
                 removeTypingIndicator();
-                const resultado = buscarRespuesta(message);
                 
-                if (resultado && resultado.qa) {
-                    addMessageWithAnswer(resultado.qa.respuesta, resultado.doc.nombre);
+                // Buscar en documentos
+                const resultado = buscarDocumento(message);
+                
+                if (resultado && resultado.coincidencias > 0) {
+                    // Generar respuesta conversacional
+                    const respuesta = generarRespuestaConversacional(message, resultado.qa.respuesta);
+                    addMessage(respuesta, 'bot');
+                    
+                    // Mostrar fuente del documento
+                    const chatContainer = document.getElementById('chatContainer');
+                    const lastMessage = chatContainer.lastChild;
+                    const sourceDiv = document.createElement('div');
+                    sourceDiv.className = 'doc-source';
+                    sourceDiv.textContent = `📖 Información de: ${resultado.doc.nombre}`;
+                    lastMessage.appendChild(sourceDiv);
                 } else {
-                    const response = `Hmm, no encontré una respuesta exacta.\n\nPuedo ayudarte con preguntas sobre:\n• R360 Servicio\n• R360 Ventas\n• R360 Mercadeo\n• R360 Fabrica\n• Super Administrador\n\n¿Qué necesitas saber?`;
-                    addMessage(response, 'bot');
+                    // Respuesta cuando no encuentra
+                    const respuestaDefault = [
+                        "Ey, eso no lo tengo en los documentos. ¿Pregúnteme de Servicio, Ventas, Mercadeo, Fabrica o Administrador?",
+                        "Parcero, eso no sale en lo que tengo. ¿Algo de los documentos R360?",
+                        "Hmm, eso sí no me aparece. ¿Algo más que necesite saber?"
+                    ];
+                    addMessage(respuestaDefault[Math.floor(Math.random() * respuestaDefault.length)], 'bot');
                 }
             }, 800);
         }
 
-        // Agregar mensaje normal
+        // Agregar mensaje
         function addMessage(text, sender) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
@@ -570,27 +612,6 @@
             contentDiv.textContent = text;
             
             messageDiv.appendChild(contentDiv);
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Agregar mensaje con respuesta de documento
-        function addMessageWithAnswer(answer, docName) {
-            const chatContainer = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message bot';
-            
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            contentDiv.style.background = '#dcfce7';
-            contentDiv.style.color = '#166534';
-            contentDiv.style.borderLeft = '4px solid #22c55e';
-            
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'answer-badge';
-            answerDiv.innerHTML = `<strong>📖 ${docName}</strong>${answer.replace(/\n/g, '<br>')}`;
-            
-            messageDiv.appendChild(answerDiv);
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
