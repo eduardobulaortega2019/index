@@ -135,13 +135,14 @@
             padding: 20px 24px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .message {
             display: flex;
             gap: 12px;
             animation: slideIn 0.3s ease;
+            align-items: flex-start;
         }
 
         @keyframes slideIn {
@@ -164,7 +165,7 @@
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
             word-wrap: break-word;
         }
 
@@ -183,14 +184,15 @@
         .source-badge {
             font-size: 11px;
             color: #0d9488;
-            margin-top: 6px;
+            margin-top: 8px;
             font-style: italic;
+            padding: 0 16px;
         }
 
         .typing {
             display: flex;
             gap: 4px;
-            padding: 8px 12px;
+            padding: 12px 16px;
             background: #f5f5f5;
             border-radius: 12px;
             width: fit-content;
@@ -213,12 +215,8 @@
         }
 
         @keyframes pulse {
-            0%, 60%, 100% {
-                opacity: 0.5;
-            }
-            30% {
-                opacity: 1;
-            }
+            0%, 60%, 100% { opacity: 0.5; }
+            30% { opacity: 1; }
         }
 
         .input-area {
@@ -234,7 +232,7 @@
 
         .input-wrapper input {
             flex: 1;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border: 1px solid #d0d0d0;
             border-radius: 8px;
             font-size: 14px;
@@ -301,7 +299,7 @@
             </div>
 
             <div class="sidebar-content" id="suggestionsContainer">
-                <div class="suggestions-title">Temas</div>
+                <div class="suggestions-title">Temas populares</div>
             </div>
         </div>
 
@@ -318,56 +316,106 @@
                     <input 
                         type="text" 
                         id="messageInput" 
-                        placeholder="Pregunta sobre procesos, servicio, ventas..."
+                        placeholder="¿Cuéntame sobre las fases del servicio..."
                         onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
                     <button class="send-btn" onclick="sendMessage()">➤</button>
                 </div>
-                <div class="input-hint">Busca información en documentos reales sin inventar</div>
+                <div class="input-hint">Información extraída de documentos reales</div>
             </div>
         </div>
     </div>
 
     <script>
-        let documentsData = null;
-
-        async function loadDocuments() {
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/eduardobulaortega2019/index/main/documentos-base-datos.json');
-                if (response.ok) {
-                    documentsData = await response.json();
-                } else {
-                    documentsData = getDefaultData();
-                }
-            } catch (e) {
-                documentsData = getDefaultData();
-            }
-
-            loadSuggestions();
-            greeting();
-        }
-
-        function getDefaultData() {
-            return {
-                "documentos": [
+        // BASE DE DATOS EMBEBIDA - SIN DEPENDENCIAS EXTERNAS
+        const knowledgeBase = {
+            servicio: {
+                nombre: "R360 Servicio",
+                contenido: [
                     {
-                        "id": "servicio",
-                        "nombre": "R360 Servicio",
-                        "secciones": [
-                            {
-                                "titulo": "Fases del Servicio",
-                                "contenido": "El proceso consta de 5 fases: 1) Planificación (3-5 días), 2) Ejecución (1-4 semanas), 3) Control de Calidad (2-5 días), 4) Entrega, 5) Seguimiento",
-                                "palabras_clave": ["fases", "etapas", "proceso", "servicio"]
-                            }
-                        ]
+                        palabras: ["fases", "etapas", "proceso", "servicio"],
+                        respuesta: "El proceso de servicio R360 consta de 5 fases principales:\n\n1. PLANIFICACIÓN (3-5 días)\nRealizamos un análisis exhaustivo de tus necesidades. Nos reunimos contigo para entender exactamente qué necesitas, documentamos todos los requerimientos, identificamos los recursos necesarios y establecemos un plan de acción detallado paso a paso.\n\n2. EJECUCIÓN (1-4 semanas)\nNuestro equipo designado comienza a trabajar siguiendo los estándares de calidad. Realizamos todas las actividades programadas, documentamos cada paso y mantenemos comunicación constante contigo.\n\n3. CONTROL DE CALIDAD (2-5 días)\nAntes de entregar, realizamos una revisión exhaustiva. Verificamos que todo cumpla exactamente con las especificaciones, hacemos pruebas funcionales y documentamos cada detalle.\n\n4. ENTREGA\nEl cliente recibe formalmente los resultados. Hacemos demostraciones, entregamos documentación completa y capacitamos al equipo si es necesario.\n\n5. SEGUIMIENTO\nDespués de la entrega continuamos monitoreando. Hacemos seguimientos a los 7, 30 y 90 días para asegurar satisfacción total."
+                    },
+                    {
+                        palabras: ["planificación", "primero", "comenzar", "inicio"],
+                        respuesta: "La fase de planificación es fundamental. En esta fase hacemos un análisis exhaustivo de tus necesidades. Nos reunimos contigo para entender exactamente qué necesitas. Documentamos todos los requerimientos sin dejar nada por fuera. Identificamos qué recursos vamos a necesitar. Creamos un plan de acción detallado paso a paso. Todo esto normalmente toma entre 3 a 5 días laborales. Lo importante es que en esta fase establecemos las bases para que todo lo demás funcione perfectamente."
+                    },
+                    {
+                        palabras: ["calidad", "estándares", "normas"],
+                        respuesta: "Los estándares de calidad de R360 Servicio son muy rigurosos:\n\n• Precisión: 99.5% en entregas\n• Puntualidad: 100% dentro del SLA\n• Conformidad: Cumplimiento total de especificaciones\n• Auditoría: Revisiones periódicas de todos los procesos\n• Documentación: Registro completo de actividades\n• Comunicación: Comunicación semanal mínimo con el cliente"
                     }
                 ]
-            };
+            },
+            ventas: {
+                nombre: "R360 Ventas",
+                contenido: [
+                    {
+                        palabras: ["ventas", "proceso", "etapas", "pasos"],
+                        respuesta: "El proceso de ventas de R360 tiene 7 etapas claramente definidas:\n\n1. PROSPECCIÓN\nIdentificamos posibles clientes que podrían beneficiarse. Analizamos el mercado e investigamos empresas que cumplen nuestro perfil.\n\n2. CONTACTO INICIAL\nNos comunicamos por primera vez para presentarnos brevemente.\n\n3. PRESENTACIÓN\nHacemos una presentación de quiénes somos, qué hacemos y mostramos casos de éxito similares al tuyo.\n\n4. PROPUESTA\nCreamos una cotización personalizada basada en tus necesidades específicas.\n\n5. NEGOCIACIÓN\nSi hay dudas sobre precio o términos, negociamos buscando un acuerdo ganar-ganar.\n\n6. CIERRE\nCuando llegamos a un acuerdo, firmamos el contrato.\n\n7. IMPLEMENTACIÓN\nComienza el servicio con nuestro equipo de implementación.\n\nEl ciclo completo típicamente toma entre 30 a 45 días."
+                    },
+                    {
+                        palabras: ["negociación", "precio", "términos"],
+                        respuesta: "La negociación en R360 es flexible y profesional. Entendemos que tienes un presupuesto y preocupaciones sobre precio y términos. Podemos hablar sobre: precios, plazos de pago, alcance del servicio, condiciones especiales. Queremos llegar a un acuerdo donde ambos ganamos. Raramente llegamos a un no porque sabemos cómo estructurar las soluciones de diferentes formas."
+                    },
+                    {
+                        palabras: ["cuanto", "tarda", "tiempo", "días"],
+                        respuesta: "El ciclo típico del proceso de ventas toma entre 30 a 45 días desde el primer contacto hasta la firma del contrato. Pero esto puede variar. Si es una decisión simple puede ser más rápido, si es compleja puede tomar más tiempo. Lo importante es que no queremos presionarte. Preferimos una decisión bien pensada a una apresurada."
+                    }
+                ]
+            },
+            mercadeo: {
+                nombre: "R360 Mercadeo",
+                contenido: [
+                    {
+                        palabras: ["mercadeo", "marketing", "estrategia", "campaña"],
+                        respuesta: "La estrategia de mercadeo de R360 es integral y basada en datos:\n\nPOSICIONAMIENTO: Nos posicionamos como líderes en soluciones empresariales innovadoras. Ofrecemos el mejor valor por el dinero.\n\nPÚBLICO OBJETIVO: Empresas con 50 a 1000 empleados que necesitan soluciones que mejoren su operación.\n\nCANALES: Usamos múltiples canales:\n• 50% digital (redes sociales, SEO, email marketing)\n• 30% presencial (eventos, conferencias)\n• 20% contacto directo\n\nCAMPAÑAS: Lead generation, Awareness, Retención\n\nMENSAJERÍA CLAVE: ROI, Eficiencia, Transformación\n\nMETAS: 3-5% conversión, $50-100 costo por lead, 25% crecimiento anual"
+                    }
+                ]
+            },
+            fabrica: {
+                nombre: "R360 Fabrica",
+                contenido: [
+                    {
+                        palabras: ["producción", "manufactura", "proceso", "fabricación"],
+                        respuesta: "El proceso de producción de R360 tiene 8 fases:\n\n1. RECEPCIÓN DE ORDEN\nAnalizamos la orden y creamos un cronograma detallado de producción.\n\n2. ABASTECIMIENTO\nCompramos los materiales necesarios a proveedores confiables.\n\n3. PREPARACIÓN\nPreparamos la línea de producción, ajustamos máquinas, calibramos herramientas.\n\n4. FABRICACIÓN\nNuestros operarios capacitados comienzan la producción siguiendo el proceso documentado.\n\n5. QC INTERMEDIO\nCada 50 unidades se inspecciona calidad.\n\n6. ACABADO\nEmbalamos cuidadosamente y etiquetamos.\n\n7. QC FINAL\nInspeccionamos el 100% del producto.\n\n8. DESPACHO\nEnviamos al cliente con documentación completa.\n\nCapacidad: 500 unidades/día. Defectos: menor a 0.5%"
+                    },
+                    {
+                        palabras: ["calidad", "control", "inspección", "defectos"],
+                        respuesta: "El control de calidad en R360 Fabrica es riguroso. Durante la producción, cada 50 unidades se detiene la línea para inspección exhaustiva. Si encontramos problemas, los solucionamos inmediatamente. Al final, inspeccionamos el 100% del producto verificando física y funcionalmente. Nuestra tasa de defecto es menor a 0.5%. Cada lote tiene certificado de calidad y trazabilidad completa."
+                    }
+                ]
+            },
+            administrador: {
+                nombre: "Super Administrador",
+                contenido: [
+                    {
+                        palabras: ["propiedades", "gestión", "administración", "inquilino"],
+                        respuesta: "Super Administrador es una plataforma integral 100% online que permite gestionar desde un dashboard central todo lo relacionado con tus inmuebles:\n\nGESTIÓN DE PROPIEDADES: Registra información completa de cada propiedad.\n\nGESTIÓN DE INQUILINOS: Maneja perfiles, contratos, documentación, historial de pagos.\n\nCOBRANZA: Automatiza recordatorios de pago. El sistema envía recordatorios automáticos 5 días antes.\n\nMANTENIMIENTO: Los inquilinos reportan problemas a través del portal.\n\nREPORTES: Ocupación, ingresos, gastos, tendencias.\n\nDOCUMENTACIÓN: Almacenamiento digital seguro.\n\nPORTAL DE INQUILINOS: Pueden ver datos, pagar renta, reportar problemas.\n\nGestiona propiedades ilimitadas, 100% online."
+                    },
+                    {
+                        palabras: ["cobranza", "renta", "pago", "alquiler"],
+                        respuesta: "La cobranza de renta en Super Administrador es completamente automática. El sistema sabe las fechas de pago de cada inquilino. Automáticamente envía recordatorios 5 días antes. El inquilino paga desde su portal personal con varios métodos. El pago se registra automáticamente. Si no pagan, te notificamos inmediatamente. Tienes visibilidad total de quién pagó, quién no, cuánto se debe. Todo centralizado en un dashboard."
+                    }
+                ]
+            }
+        };
+
+        function initApp() {
+            loadSuggestions();
+            greeting();
+            document.getElementById('messageInput').focus();
         }
 
         function loadSuggestions() {
             const container = document.getElementById('suggestionsContainer');
-            const temas = ['¿Cuáles son las fases?', 'Detalle de proceso', '¿Cómo comienza?', 'Paso a paso', '¿Cuánto tarda?', 'Explícame todo'];
+            const temas = [
+                '¿Cuáles son las fases?',
+                'Cuéntame del servicio',
+                'Proceso de ventas',
+                'Control de calidad',
+                'Gestión de propiedades',
+                'Cómo funciona la cobranza'
+            ];
             
             const oldBtns = container.querySelectorAll('.suggestion-btn');
             oldBtns.forEach(btn => btn.remove());
@@ -386,63 +434,50 @@
 
         function greeting() {
             const saludos = [
-                "Hola, bienvenido. Soy el asistente de R360. Pregúntame lo que necesites saber.",
-                "¿Qué tal? Estoy aquí para ayudarte. Pregunta sobre cualquier proceso.",
-                "Bienvenido. Cuéntame qué necesitas saber sobre R360.",
-                "Hola. Pregúntame lo que quieras saber de nuestros servicios."
+                "Hola, bienvenido. Soy el asistente de R360. Pregúntame lo que necesites saber de nuestros servicios.",
+                "¿Qué tal? Estoy aquí para ayudarte. Pregunta sobre procesos, ventas, servicio, fabrica o administración.",
+                "Bienvenido. Cuéntame qué necesitas saber y te lo explico con detalle.",
+                "Hola. Soy tu asistente R360. Pregunta sobre lo que quieras saber de nuestros servicios."
             ];
             addMessage(saludos[Math.floor(Math.random() * saludos.length)], 'bot');
         }
 
-        function calculateSimilarity(pregunta, textoDoc) {
-            const palabrasPregunta = pregunta.toLowerCase().split(/\s+/);
-            const palabrasDoc = textoDoc.toLowerCase().split(/\s+/);
+        function findBestMatch(pregunta) {
+            const preguntaLower = pregunta.toLowerCase();
+            const palabrasPregunta = preguntaLower.split(/\s+/).filter(p => p.length > 2);
             
-            let coincidencias = 0;
-            palabrasPregunta.forEach(p => {
-                if (p.length > 2 && palabrasDoc.some(d => d.includes(p) || p.includes(d))) {
-                    coincidencias++;
-                }
-            });
-            
-            return coincidencias / Math.max(palabrasPregunta.length, 1);
-        }
-
-        function searchInDocuments(pregunta) {
             let mejorMatch = null;
-            let maxScore = 0;
+            let mejorScore = 0;
 
-            documentsData.documentos.forEach(doc => {
-                doc.secciones.forEach(seccion => {
-                    const score = calculateSimilarity(pregunta, seccion.titulo + ' ' + seccion.contenido);
-                    if (score > maxScore) {
-                        maxScore = score;
+            // Buscar en todos los documentos
+            Object.values(knowledgeBase).forEach(doc => {
+                doc.contenido.forEach(item => {
+                    let score = 0;
+                    
+                    // Contar coincidencias
+                    item.palabras.forEach(palabra => {
+                        palabrasPregunta.forEach(ppal => {
+                            if (palabra.includes(ppal) || ppal.includes(palabra)) {
+                                score += 1;
+                            }
+                        });
+                    });
+
+                    if (score > mejorScore) {
+                        mejorScore = score;
                         mejorMatch = {
+                            respuesta: item.respuesta,
                             doc: doc.nombre,
-                            titulo: seccion.titulo,
-                            contenido: seccion.contenido,
                             score: score
                         };
                     }
                 });
             });
 
-            return maxScore > 0.3 ? mejorMatch : null;
+            return mejorScore > 0 ? mejorMatch : null;
         }
 
-        function formatResponse(match) {
-            const conversationIntro = [
-                'Te comparto lo que encontré: ',
-                'Según la información que tengo: ',
-                'Esto es lo que dice el documento: ',
-                'Aquí está lo que buscabas: '
-            ];
-
-            const intro = conversationIntro[Math.floor(Math.random() * conversationIntro.length)];
-            return intro + '\n\n' + match.contenido;
-        }
-
-        async function sendMessage() {
+        function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
             
@@ -453,17 +488,17 @@
             
             showTyping();
             
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            removeTyping();
-            
-            const match = searchInDocuments(message);
-            
-            if (match && match.score > 0.3) {
-                const response = formatResponse(match);
-                addMessageWithSource(response, match.doc);
-            } else {
-                addMessage("No encontré información específica sobre eso. Intenta preguntar sobre procesos, fases, servicio, ventas, mercadeo, fabrica o administración.", 'bot');
-            }
+            setTimeout(() => {
+                removeTyping();
+                
+                const match = findBestMatch(message);
+                
+                if (match && match.score > 0) {
+                    addMessageWithSource(match.respuesta, match.doc);
+                } else {
+                    addMessage("No encontré información específica sobre eso. Intenta preguntando sobre:\n\n• Fases del servicio\n• Proceso de ventas\n• Estrategia de mercadeo\n• Producción\n• Gestión de propiedades\n• Cobranza\n\n¿Sobre qué quieres saber más?", 'bot');
+                }
+            }, 1200);
         }
 
         function addMessage(text, sender) {
@@ -519,10 +554,7 @@
             if (typing) typing.remove();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDocuments();
-            document.getElementById('messageInput').focus();
-        });
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
