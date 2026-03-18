@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DomoNow Chat - Asistente Inteligente</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/+esm"></script>
+    <title>DomoNow - Asistente de Consulta de Documentos</title>
     <style>
         * {
             margin: 0;
@@ -171,7 +170,7 @@
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .message.user .message-content {
@@ -184,6 +183,42 @@
             background: #f3f4f6;
             color: #1f2937;
             border-bottom-left-radius: 4px;
+        }
+
+        .document-result {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 8px;
+        }
+
+        .document-result h4 {
+            color: #16a34a;
+            margin-bottom: 8px;
+        }
+
+        .document-result p {
+            font-size: 13px;
+            color: #365314;
+            margin-bottom: 12px;
+        }
+
+        .download-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #15803d;
         }
 
         .typing-indicator {
@@ -274,7 +309,6 @@
             margin-top: 12px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
@@ -297,7 +331,6 @@
             }
         }
 
-        /* Scrollbar personalizada */
         .sidebar-content::-webkit-scrollbar,
         .chat-container::-webkit-scrollbar {
             width: 6px;
@@ -313,66 +346,42 @@
             background: #cbd5e1;
             border-radius: 3px;
         }
-
-        .sidebar-content::-webkit-scrollbar-thumb:hover,
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">💬</div>
+                    <div class="logo-icon">📚</div>
                     <div class="logo-text">
-                        <h1>DomoNow</h1>
-                        <p>Asistente IA</p>
+                        <h1>R360</h1>
+                        <p>Consulta de Documentos</p>
                     </div>
                 </div>
             </div>
 
-            <div class="sidebar-content">
+            <div class="sidebar-content" id="suggestionsContainer">
                 <div class="suggestions-title">Preguntas Rápidas</div>
-                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son los 4 módulos principales de DomoNow?')">
-                    ¿Cuáles son los módulos principales?
-                </button>
-                <button class="suggestion-btn" onclick="setQuestion('¿Cómo funciona la aplicación móvil para técnicos?')">
-                    Aplicación móvil para técnicos
-                </button>
-                <button class="suggestion-btn" onclick="setQuestion('¿Qué puede hacer un inquilino en el portal?')">
-                    Portal de inquilinos
-                </button>
-                <button class="suggestion-btn" onclick="setQuestion('¿Cómo se automatizan los procesos?')">
-                    Automatización de procesos
-                </button>
-                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son las integraciones disponibles?')">
-                    Integraciones disponibles
-                </button>
-                <button class="suggestion-btn" onclick="setQuestion('¿Cuáles son los objetivos principales de DomoNow?')">
-                    Objetivos del producto
-                </button>
+                <!-- Las preguntas se cargan dinámicamente aquí -->
             </div>
 
             <div class="sidebar-footer">
-                <p>🚀 Powered by Claude AI</p>
-                <p style="margin-top: 8px;">Version 1.0</p>
+                <p>🚀 Sistema Inteligente de Búsqueda</p>
+                <p style="margin-top: 8px;">Busca en todos tus documentos</p>
             </div>
         </div>
 
-        <!-- Main Chat Area -->
         <div class="main">
             <div class="header">
-                <h2>🤖 Asistente DomoNow</h2>
-                <p>Hola, soy tu asistente inteligente. Pregúntame sobre DomoNow</p>
+                <h2>🤖 Asistente de Documentos R360</h2>
+                <p>Haz preguntas y busca información en todos tus documentos</p>
             </div>
 
             <div class="chat-container" id="chatContainer">
                 <div class="message bot">
                     <div class="message-content">
-                        Hola 👋 Soy el asistente DomoNow. Puedo responder todas tus preguntas sobre la plataforma de gestión de propiedades. ¿Qué necesitas saber?
+                        Hola 👋 Soy tu asistente inteligente. Puedo buscar información en todos tus documentos (Servicio, Ventas, Mercadeo, Fabrica, Administrador). ¿Qué necesitas saber?
                     </div>
                 </div>
             </div>
@@ -382,294 +391,186 @@
                     <input 
                         type="text" 
                         id="messageInput" 
-                        placeholder="Escribe tu pregunta aquí..."
+                        placeholder="Ejemplo: ¿Cuáles son las fases del servicio?"
                         onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
                     <button class="send-btn" onclick="sendMessage()" id="sendBtn">✉️</button>
                 </div>
                 <div class="input-hint">
-                    💡 Pregunta sobre módulos, características, integraciones o cualquier aspecto de DomoNow
+                    💡 Puedo buscar en: Servicio, Ventas, Mercadeo, Fabrica, Administrador
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Base de datos de respuestas sobre DomoNow
-        const knowledgeBase = {
-            modulos: {
-                keywords: ['módulo', 'módulos', 'características principales', 'que tiene'],
-                response: `DomoNow tiene 4 módulos principales:
+        let documentosMetadata = null;
 
-**1. Gestión Central** 📊
-- Panel de cartera con métricas consolidadas
-- Gestión de arrendamientos e inquilinos
-- Integración contable y ERP
-- Órdenes de trabajo de mantenimiento
-- Centro de comunicaciones unificado
-- Gestión de documentos y contratos
-- Reportes y análisis avanzado
-
-**2. Aplicación Móvil para Campo** 📱
-- Gestión de tareas para técnicos
-- Navegación y mapas
-- Listas de verificación personalizables
-- Comunicación en tiempo real
-- Subida de fotos y videos
-- Funciona sin conexión
-
-**3. Portal de Inquilinos** 🏠
-- Pago de renta (múltiples métodos)
-- Solicitudes de mantenimiento
-- Acceso a documentos
-- Mensajería con administrador
-- Recordatorios automáticos
-
-**4. Automatización y Alertas** ⚡
-- Flujos de trabajo inteligentes
-- Tareas recurrentes automáticas
-- Centro de alertas centralizado
-- Control de acceso por roles
-- Registros de auditoría completos`
-            },
-            
-            app_movil: {
-                keywords: ['aplicación móvil', 'app móvil', 'técnico', 'campo', 'smartphone'],
-                response: `La Aplicación Móvil DomoNow es perfecta para técnicos de campo:
-
-**Características Principales:**
-✅ **Gestión de Tareas** - Reciben órdenes de trabajo priorizadas
-✅ **Navegación GPS** - Mapas, rutas optimizadas e integración de cerraduras
-✅ **Listas de Verificación** - Inspecciones paso a paso
-✅ **Fotos y Videos** - Documentan el trabajo completado
-✅ **Comunicación** - Chat con oficina e inquilinos
-✅ **Modo Offline** - Funciona sin internet, sincroniza después
-
-**Beneficios:**
-- Aumenta eficiencia de técnicos
-- Reduce errores de documentación
-- Mejor comunicación en terreno
-- Respuestas más rápidas a inquilinos`
-            },
-
-            portal_inquilinos: {
-                keywords: ['inquilino', 'portal', 'pagar renta', 'mantenimiento', 'residente'],
-                response: `El Portal de Inquilinos permite una experiencia moderna y completa:
-
-**Lo que Pueden Hacer:**
-💰 **Pagos de Renta**
-- Múltiples métodos de pago
-- Pago automático
-- Historial de pagos
-
-🔧 **Mantenimiento**
-- Reportar problemas fácilmente
-- Seguimiento de solicitudes
-- Chat con administrador
-
-📄 **Documentos**
-- Acceso a contrato de arrendamiento
-- Documentos importantes
-- Aviso de renovaciones
-
-💬 **Comunicación**
-- Mensajería directa
-- Notificaciones automáticas
-- Recordatorios de pagos
-
-**Impacto:**
-- Reduce morosidad en 30%
-- Acelera cobro de renta
-- Mayor satisfacción de inquilinos`
-            },
-
-            automatizacion: {
-                keywords: ['automatización', 'automático', 'flujo de trabajo', 'reglas', 'alertas'],
-                response: `La Automatización de DomoNow te ahorra tiempo y errores:
-
-**Cómo Funciona:**
-🤖 **Flujos de Trabajo Automáticos**
-- Cuando un inquilino reporta un problema → se crea automáticamente una orden de trabajo
-- Se asigna al técnico correcto
-- Se envía confirmación al inquilino
-
-📅 **Tareas Recurrentes**
-- Inspecciones trimestrales programadas automáticamente
-- Mantenimiento preventivo planificado
-- Renovaciones de contrato alertadas
-
-🔔 **Centro de Alertas**
-- Morosidad en pagos
-- Mantenimiento vencido
-- Plazos legales
-- Seguros próximos a vencer
-
-**Beneficios:**
-✅ Reduce trabajo manual en 40%
-✅ Previene problemas antes de que ocurran
-✅ Cumplimiento normativo automático
-✅ Respuestas más rápidas`
-            },
-
-            integraciones: {
-                keywords: ['integración', 'integraciones', 'conectar', 'sistemas', 'terceros', 'api'],
-                response: `DomoNow se integra con múltiples sistemas:
-
-**Integraciones Disponibles:**
-
-📊 **Contabilidad & ERP**
-- Sistemas contables
-- Software financiero
-- Plataformas ERP
-
-💳 **Pagos**
-- Transferencias ACH
-- Tarjetas de crédito
-- Billeteras digitales
-- Pagos móviles
-
-🏠 **Tecnología Inteligente**
-- Cerraduras inteligentes
-- Sensores de IoT
-- Termostatos inteligentes
-- Sensores de fugas
-
-📱 **Comunicación**
-- SMS y WhatsApp
-- Correo electrónico
-- Notificaciones push
-
-🔗 **Terceros**
-- Sistemas CRM
-- Servicios legales
-- Seguros
-- Redes de mantenimiento
-
-**Ventaja:**
-Una plataforma única conectada con todo lo que necesitas operar.`
-            },
-
-            objetivos: {
-                keywords: ['objetivo', 'objetivos', 'para qué', 'propósito', 'meta'],
-                response: `Los Objetivos Principales de DomoNow:
-
-**1. Digitalizar las Operaciones** 📱
-Pasar de procesos manuales a plataforma integrada
-
-**2. Automatizar Todo** ⚡
-Eliminar tareas repetitivas y errores humanos
-
-**3. Mejorar Relaciones con Inquilinos** 💞
-Comunicación clara y respuestas rápidas
-
-**4. Optimizar Campo** 🚗
-Despacho dinámico y técnicos equipados
-
-**5. Escalar sin Límites** 📈
-Desde 5 propiedades hasta 500+
-
-**6. Multilingüe** 🌍
-Soporta español e inglés (expandible)
-
-**Resultado:**
-Administradores más eficientes, inquilinos más satisfechos, menos costos.`
-            },
-
-            general: {
-                keywords: ['domanow', 'qué es', 'quién', 'cómo funciona'],
-                response: `DomoNow es una plataforma integral de gestión de propiedades creada por Ofima/Skypex Corp.`,
-documentos: {
-    keywords: ['documento', 'descargar', 'pdf', 'archivo', 'guía', 'manual', 'procedimiento'],
-    response: `**📚 Documentos Disponibles**
+        // Cargar metadata de documentos desde GitHub
+        async function loadDocumentsMetadata() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/eduardobulaortega2019/index/main/documentos-metadata.json');
+                if (response.ok) {
+                    documentosMetadata = await response.json();
+                    cargarPreguntasRapidas();
+                } else {
+                    console.log('Usando metadata local');
+                    documentosMetadata = getDefaultMetadata();
+                    cargarPreguntasRapidas();
                 }
-
-**En Pocas Palabras:**
-Una aplicación que unifica TODO lo que necesita un administrador de propiedades:
-- Cobro de renta
-- Mantenimiento
-- Comunicación con inquilinos
-- Reportes y análisis
-- Control desde cualquier dispositivo
-
-**Dirigido A:**
-✅ Administradores de propiedades
-✅ Técnicos de mantenimiento
-✅ Inquilinos
-✅ Propietarios
-✅ Proveedores
-
-**Disponible En:**
-🌐 Plataforma Web
-📱 Aplicación Móvil (iOS/Android)
-⌨️ Interfaz para tablets
-
-¿Qué aspecto específico te interesa saber más?`
+            } catch (error) {
+                console.log('Error cargando metadata, usando valores por defecto');
+                documentosMetadata = getDefaultMetadata();
+                cargarPreguntasRapidas();
             }
-        };
-
-        // Función para encontrar la respuesta correcta
-        function findAnswer(question) {
-            const lowerQuestion = question.toLowerCase();
-            
-            for (const [key, data] of Object.entries(knowledgeBase)) {
-                if (data.keywords && data.keywords.some(keyword => lowerQuestion.includes(keyword))) {
-                    return data.response;
-                }
-            }
-            
-            return `Entiendo tu pregunta sobre DomoNow. Para una respuesta más precisa, aquí están los temas que puedo ayudarte:
-
-📚 **Puedo explicarte sobre:**
-- Los 4 módulos principales
-- La aplicación móvil para técnicos
-- El portal de inquilinos
-- La automatización de procesos
-- Las integraciones disponibles
-- Los objetivos del producto
-
-¿Cuál de estos temas te interesa?`;
         }
 
-        // Función para enviar mensaje
+        // Metadata por defecto (si no se puede cargar desde GitHub)
+        function getDefaultMetadata() {
+            return {
+                "documentos": [
+                    {
+                        "id": "servicio",
+                        "nombre": "R360 Servicio",
+                        "tipo": "pdf",
+                        "palabras_clave": ["servicio", "fases", "etapas", "proceso", "atención", "cliente", "calidad"],
+                        "descripcion": "Proceso de servicio al cliente con fases y estándares"
+                    },
+                    {
+                        "id": "ventas",
+                        "nombre": "R360 Ventas",
+                        "tipo": "docx",
+                        "palabras_clave": ["venta", "ventas", "cliente", "propuesta", "comercial", "cierre", "negociación"],
+                        "descripcion": "Proceso de ventas y estrategias comerciales"
+                    },
+                    {
+                        "id": "mercadeo",
+                        "nombre": "R360 Mercadeo",
+                        "tipo": "pdf",
+                        "palabras_clave": ["mercadeo", "marketing", "campaña", "estrategia", "público"],
+                        "descripcion": "Estrategias de marketing y campañas"
+                    },
+                    {
+                        "id": "fabrica",
+                        "nombre": "R360 Fabrica",
+                        "tipo": "docx",
+                        "palabras_clave": ["fabrica", "producción", "manufactura", "procesos", "operacional"],
+                        "descripcion": "Procesos de manufactura y producción"
+                    },
+                    {
+                        "id": "administrador",
+                        "nombre": "Super Administrador",
+                        "tipo": "pdf",
+                        "palabras_clave": ["administrador", "gestión", "propiedades", "inquilino", "mantenimiento"],
+                        "descripcion": "Gestión de propiedades e inquilinos"
+                    }
+                ],
+                "preguntas_rapidas": [
+                    "¿Cuáles son las fases del servicio?",
+                    "¿Cómo es el proceso de ventas?",
+                    "¿Cuál es la estrategia de mercadeo?",
+                    "¿Cómo funciona la producción?",
+                    "¿Cómo gestiono propiedades?"
+                ]
+            };
+        }
+
+        // Cargar preguntas rápidas
+        function cargarPreguntasRapidas() {
+            const container = document.getElementById('suggestionsContainer');
+            const title = container.querySelector('.suggestions-title');
+            
+            // Limpiar botones antiguos
+            const oldButtons = container.querySelectorAll('.suggestion-btn');
+            oldButtons.forEach(btn => btn.remove());
+
+            // Agregar nuevos botones
+            documentosMetadata.preguntas_rapidas.forEach(pregunta => {
+                const btn = document.createElement('button');
+                btn.className = 'suggestion-btn';
+                btn.textContent = pregunta;
+                btn.onclick = () => setQuestion(pregunta);
+                container.insertBefore(btn, container.querySelector('.suggestions-title').nextElementSibling);
+            });
+        }
+
+        // Buscar documento por palabras clave
+        function buscarDocumento(pregunta) {
+            const preguntaLower = pregunta.toLowerCase();
+            let mejorCoincidencia = null;
+            let maxCoincidencias = 0;
+
+            documentosMetadata.documentos.forEach(doc => {
+                let coincidencias = 0;
+                doc.palabras_clave.forEach(palabra => {
+                    if (preguntaLower.includes(palabra)) {
+                        coincidencias++;
+                    }
+                });
+
+                if (coincidencias > maxCoincidencias) {
+                    maxCoincidencias = coincidencias;
+                    mejorCoincidencia = doc;
+                }
+            });
+
+            return mejorCoincidencia;
+        }
+
+        // Enviar mensaje
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
             
             if (!message) return;
             
-            // Mostrar mensaje del usuario
             addMessage(message, 'user');
             input.value = '';
             
-            // Mostrar indicador de escritura
             showTypingIndicator();
             
-            // Simular delay y obtener respuesta
             setTimeout(() => {
                 removeTypingIndicator();
-                const response = findAnswer(message);
-                addMessage(response, 'bot');
+                const documento = buscarDocumento(message);
+                
+                if (documento) {
+                    const response = `📖 **${documento.nombre}**\n\n${documento.descripcion}\n\n¿Quieres descargar este documento?`;
+                    addMessage(response, 'bot', documento);
+                } else {
+                    const response = `Hmm, no encontré una coincidencia exacta. Puedo buscar en:\n\n• R360 Servicio\n• R360 Ventas\n• R360 Mercadeo\n• R360 Fabrica\n• Super Administrador\n\n¿Cuál te interesa?`;
+                    addMessage(response, 'bot');
+                }
             }, 1000);
         }
 
         // Agregar mensaje al chat
-        function addMessage(text, sender) {
+        function addMessage(text, sender, documento = null) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            contentDiv.textContent = text;
+            contentDiv.innerHTML = text.replace(/\n/g, '<br>');
             
             messageDiv.appendChild(contentDiv);
-            chatContainer.appendChild(messageDiv);
             
-            // Auto-scroll
+            if (documento) {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'document-result';
+                resultDiv.innerHTML = `
+                    <h4>✅ Documento encontrado</h4>
+                    <p>${documento.descripcion}</p>
+                    <a href="${documento.url}" target="_blank" class="download-btn">📥 Descargar ${documento.nombre}</a>
+                `;
+                messageDiv.appendChild(resultDiv);
+            }
+            
+            chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // Indicador de escritura
+        // Mostrar indicador de escritura
         function showTypingIndicator() {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
@@ -685,20 +586,22 @@ Una aplicación que unifica TODO lo que necesita un administrador de propiedades
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // Eliminar indicador de escritura
         function removeTypingIndicator() {
             const indicator = document.getElementById('typingIndicator');
             if (indicator) indicator.remove();
         }
 
-        // Establecer pregunta sugerida
+        // Establecer pregunta rápida
         function setQuestion(question) {
             document.getElementById('messageInput').value = question;
             document.getElementById('messageInput').focus();
             sendMessage();
         }
 
-        // Focus en input al cargar
+        // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
+            loadDocumentsMetadata();
             document.getElementById('messageInput').focus();
         });
     </script>
