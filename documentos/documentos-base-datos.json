@@ -1,0 +1,84 @@
+{
+  "documentos": [
+    {
+      "id": "servicio",
+      "nombre": "R360 Servicio",
+      "secciones": [
+        {
+          "titulo": "Fases del Servicio",
+          "contenido": "El proceso de servicio R360 consta de 5 fases principales:\n\n1. PLANIFICACIÓN (3-5 días laborales)\nEn esta fase realizamos un análisis exhaustivo de las necesidades del cliente. Se llevan a cabo reuniones de descubrimiento donde documentamos todos los requerimientos, identificamos los recursos necesarios y establecemos un plan de acción detallado paso a paso. Es fundamental porque aquí se sientan las bases para que todo lo demás funcione perfectamente.\n\n2. EJECUCIÓN (1-4 semanas)\nNuestro equipo designado comienza a trabajar siguiendo los estándares de calidad establecidos. Realizamos todas las actividades programadas, documentamos cada paso del proceso y mantenemos comunicación constante con el cliente. Esta es la fase más intensiva del proceso.\n\n3. CONTROL DE CALIDAD (2-5 días)\nAntes de entregar, realizamos una revisión exhaustiva. Verificamos que todo cumpla exactamente con las especificaciones acordadas, hacemos pruebas funcionales para asegurar que todo funciona perfectamente y documentamos cada detalle. Si encontramos algo que no está al 100%, lo arreglamos antes de entregar.\n\n4. ENTREGA\nEn esta fase el cliente recibe formalmente los resultados. Hacemos demostraciones, entregamos documentación completa, capacitamos al equipo del cliente si es necesario y obtenemos la aprobación final.\n\n5. SEGUIMIENTO (Post-servicio)\nDespués de la entrega continuamos monitoreando los resultados. Hacemos seguimientos a los 7 días, 30 días y 90 días. Resolvemos dudas, hacemos ajustes menores si es necesario y nos aseguramos de que el cliente esté completamente satisfecho.",
+          "palabras_clave": ["fases", "etapas", "proceso", "servicio", "planificación", "ejecución", "calidad", "entrega", "seguimiento"]
+        },
+        {
+          "titulo": "Detalle de Fase de Planificación",
+          "contenido": "La fase de planificación es la más importante porque aquí se sientan todas las bases. Durante esta fase, nuestro equipo realiza un análisis exhaustivo de tus necesidades. Nos reunimos contigo para entender exactamente qué necesitas. Documentamos todos los requerimientos sin dejar nada por fuera. Identificamos qué recursos vamos a necesitar para ejecutar el proyecto. Creamos un plan de acción detallado paso a paso. Todo esto normalmente toma entre 3 a 5 días laborales, dependiendo de la complejidad del proyecto. Lo importante es que en esta fase establecemos las bases para que todo lo demás salga perfecto. Sin una buena planificación, el resto del proceso será más difícil.",
+          "palabras_clave": ["planificación", "fase de planificación", "detalle", "análisis", "necesidades", "plan"]
+        },
+        {
+          "titulo": "Estándares de Calidad",
+          "contenido": "Los estándares de calidad de R360 Servicio son muy rigurosos:\n- Precisión: 99.5% en entregas\n- Puntualidad: 100% dentro del SLA (Service Level Agreement)\n- Conformidad: Cumplimiento total de especificaciones\n- Auditoría: Revisiones periódicas de todos los procesos\n- Documentación: Registro completo de todas las actividades\n- Comunicación: Comunicación semanal mínimo con el cliente",
+          "palabras_clave": ["calidad", "estándares", "normas", "sla", "precisión", "puntualidad", "conformidad"]
+        }
+      ]
+    },
+    {
+      "id": "ventas",
+      "nombre": "R360 Ventas",
+      "secciones": [
+        {
+          "titulo": "Proceso de Ventas Completo",
+          "contenido": "El proceso de ventas de R360 es consultivo y está bien estructurado en 7 etapas claramente definidas:\n\n1. PROSPECCIÓN\nPrimero identificamos posibles clientes que podrían beneficiarse de nuestras soluciones. Analizamos el mercado, investigamos empresas que cumplen nuestro perfil de cliente ideal y creamos una lista de potenciales oportunidades.\n\n2. CONTACTO INICIAL\nNos comunicamos por primera vez. Puede ser una llamada, un email o una reunión. El objetivo es presentarnos brevemente y entender si tienes interés en conversar.\n\n3. PRESENTACIÓN\nEn esta reunión, no vendemos directamente. Hacemos una presentación de quiénes somos, qué hacemos y cómo podemos ayudar a empresas como la tuya. Mostramos casos de éxito similares al tuyo.\n\n4. PROPUESTA\nBasados en lo que entendimos de tus necesidades, creamos una cotización personalizada. No es una oferta genérica. Es específica para tu situación.\n\n5. NEGOCIACIÓN\nSi la propuesta te interesa pero tienes preocupaciones sobre precio o términos, negociamos. Queremos llegar a un acuerdo que sea ganar-ganar.\n\n6. CIERRE\nCuando llegamos a un acuerdo, firmamos el contrato. Este es el momento donde formalizamos la relación.\n\n7. IMPLEMENTACIÓN\nDespués de firmar, comienza el servicio. Nuestro equipo de implementación se hace cargo para asegurar un inicio perfecto.\n\nEl ciclo completo típicamente toma entre 30 a 45 días desde el primer contacto hasta la firma del contrato.",
+          "palabras_clave": ["proceso", "ventas", "etapas", "pasos", "prospección", "contacto", "presentación", "propuesta", "negociación", "cierre", "implementación"]
+        },
+        {
+          "titulo": "Detalle de Fase de Negociación",
+          "contenido": "La negociación en R360 es flexible y profesional. Entendemos que tienes un presupuesto y preocupaciones legítimas sobre el precio y los términos. Nosotros podemos hablar sobre: precios, plazos de pago, alcance del servicio, condiciones especiales, bonificaciones, descuentos por volumen. Queremos llegar a un acuerdo donde ambos ganamos. Raramente llegamos a un no porque sabemos cómo estructurar las soluciones de diferentes formas. Nuestro objetivo es que cada cliente sienta que hizo una excelente inversión.",
+          "palabras_clave": ["negociación", "precio", "términos", "acuerdo", "condiciones", "plazos"]
+        }
+      ]
+    },
+    {
+      "id": "mercadeo",
+      "nombre": "R360 Mercadeo",
+      "secciones": [
+        {
+          "titulo": "Estrategia de Mercadeo",
+          "contenido": "La estrategia de mercadeo de R360 es integral y basada en datos. Está diseñada específicamente para empresas B2B medianas y grandes:\n\nPOSICIONAMIENTO: Nos posicionamos como líderes en soluciones empresariales innovadoras. No buscamos ser los más baratos, sino ofrecer el mejor valor por el dinero invertido.\n\nPÚBLICO OBJETIVO: Nuestro cliente ideal son empresas con 50 a 1000 empleados que necesitan soluciones que mejoren su operación.\n\nCANALES: Usamos múltiples canales de manera equilibrada:\n- 50% digital (redes sociales, SEO, email marketing)\n- 30% presencial (eventos, conferencias, networking)\n- 20% contacto directo y recomendaciones\n\nCAMPAÑAS: Realizamos tres tipos de campañas:\n- Lead generation: para traer prospectos nuevos\n- Awareness: para darnos a conocer en el mercado\n- Retención: para mantener contentos a los clientes actuales\n\nMENSAJERÍA CLAVE: ROI (retorno en inversión), Eficiencia (hacemos tu operación más eficiente), Transformación (ayudamos a transformar tu negocio).\n\nKPIS (Indicadores clave de rendimiento):\n- Tasa de conversión objetivo: 3-5%\n- Costo por lead: $50-100\n- Crecimiento anual objetivo: 25%",
+          "palabras_clave": ["estrategia", "mercadeo", "marketing", "campaña", "posicionamiento", "público", "canales", "digital"]
+        }
+      ]
+    },
+    {
+      "id": "fabrica",
+      "nombre": "R360 Fabrica",
+      "secciones": [
+        {
+          "titulo": "Proceso de Producción Completo",
+          "contenido": "El proceso de producción de R360 es meticuloso y está optimizado para eficiencia y calidad. Consta de 8 fases principales:\n\n1. RECEPCIÓN DE ORDEN\nCuando llega una orden, nuestro equipo de planificación la analiza detalladamente. Se verifica que tengamos todos los materiales necesarios en inventario. Se crea un cronograma detallado de producción considerando otras órdenes en cola.\n\n2. ABASTECIMIENTO\nSi algo falta en inventario, se compra inmediatamente a nuestros proveedores confiables con los que trabajamos hace años. Verificamos que el material cumpla nuestros estándares de calidad.\n\n3. PREPARACIÓN\nSe prepara la línea de producción. Se ajustan máquinas, se calibran herramientas, se organizan los materiales en el orden correcto.\n\n4. FABRICACIÓN\nNuestros operarios capacitados comienzan la producción. Siguen exactamente el proceso documentado. Cada paso es registrado para trazabilidad.\n\n5. QC INTERMEDIO\nCada 50 unidades, un inspector detiene la producción y verifica calidad. Si hay problemas, se detiene todo y se corrige antes de continuar.\n\n6. ACABADO\nUna vez completada la producción, se embalaja cuidadosamente, se etiqueta correctamente y se prepara para envío.\n\n7. QC FINAL\nEl 100% del producto se inspecciona nuevamente. Se verifica física y funcionalmente que todo sea perfecto.\n\n8. DESPACHO\nSe envía al cliente con documentación completa y certificados de calidad.\n\nNuestra capacidad de producción es de 500 unidades por día. Tasa de defecto: menor a 0.5%.",
+          "palabras_clave": ["producción", "manufactura", "proceso", "fabricación", "orden", "materiales", "calidad", "despacho"]
+        },
+        {
+          "titulo": "Control de Calidad en Fabricación",
+          "contenido": "El control de calidad en R360 Fabrica es riguroso y exhaustivo. Durante la producción, cada 50 unidades se detiene completamente la línea para que un inspector verificado realice una inspección exhaustiva. Si encuentra cualquier problema, se soluciona inmediatamente antes de continuar la producción. Al final del proceso, el 100% del producto se inspecciona nuevamente. Se verifica tanto física como funcionalmente que cada unidad cumpla perfectamente con las especificaciones. Nuestra tasa de defecto es menor a 0.5%, lo que significa que casi todo lo que producimos es perfecto. Además, cada lote de producción viene con un certificado de calidad y trazabilidad completa.",
+          "palabras_clave": ["calidad", "control", "defectos", "inspección", "verificación", "qc"]
+        }
+      ]
+    },
+    {
+      "id": "administrador",
+      "nombre": "Super Administrador",
+      "secciones": [
+        {
+          "titulo": "Funcionalidades de la Plataforma",
+          "contenido": "Super Administrador es una plataforma integral 100% online que permite gestionar desde un dashboard central todo lo relacionado con tus inmuebles:\n\nGESTIÓN DE PROPIEDADES: Registra información completa de cada propiedad. Ubicación, descripción, características, historial de mantenimiento. Todo centralizado en un lugar.\n\nGESTIÓN DE INQUILINOS: Maneja perfiles completos de inquilinos, contratos digitales, documentación (cédulas, referencias), historial de pagos. Toda la información en un lugar.\n\nCOBRANZA DE ALQUILER: Automatiza recordatorios de pago. El sistema puede enviar recordatorios automáticos 5 días antes de la fecha de pago. Registra pagos automáticamente, seguimiento de morosidad. Todo centralizado.\n\nMANTENIMIENTO: Los inquilinos reportan problemas a través de su portal personal. Tú recibes las solicitudes, asignas a proveedores, monitoreas el progreso del trabajo.\n\nREPORTES: Tienes reportes de ocupación (cuántas propiedades están ocupadas), ingresos (cuánto cobró), gastos (cuánto gastó), tendencias (cómo va el negocio). Datos que necesitas para tomar decisiones.\n\nDOCUMENTACIÓN: Almacenamiento digital seguro de contratos, documentos de identificación, historiales de pagos.\n\nPORTAL DE INQUILINOS: Los inquilinos pueden ver sus datos, pagar renta en línea, reportar problemas de mantenimiento, ver documentos.\n\nLa plataforma gestiona propiedades ilimitadas y es 100% online. No necesitas instalar nada.",
+          "palabras_clave": ["gestión", "propiedades", "administración", "inquilinos", "alquiler", "cobranza", "mantenimiento", "reportes"]
+        },
+        {
+          "titulo": "Cómo Funciona la Cobranza",
+          "contenido": "La cobranza de renta en Super Administrador es completamente automática y eficiente. El sistema sabe las fechas de pago de cada inquilino. Automáticamente envía recordatorios 5 días antes de la fecha de pago al inquilino. El inquilino puede pagar desde su portal personal con varios métodos de pago (transferencia, tarjeta, cheque). El pago se registra automáticamente en el sistema sin que tengas que hacer nada. Si un inquilino no paga, el sistema te notifica inmediatamente. Tienes visibilidad total de quién pagó, quién no pagó, cuánto se debe. Todo está centralizado en un dashboard. La tasa de cobranza mejora porque los recordatorios automáticos son muy efectivos.",
+          "palabras_clave": ["cobranza", "renta", "pago", "alquiler", "automático", "recordatorios"]
+        }
+      ]
+    }
+  ]
+}
