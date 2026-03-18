@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R360 - Consulta Inteligente IA</title>
+    <title>R360 - Asistente Inteligente</title>
     <style>
         * {
             margin: 0;
@@ -80,23 +80,22 @@
             margin-bottom: 12px;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .suggestion-btn {
             width: 100%;
             text-align: left;
-            padding: 12px;
+            padding: 10px;
             margin-bottom: 8px;
             background: #f3f4f6;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #374151;
             cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
+            font-size: 12px;
+            transition: all 0.3s;
             border-left: 3px solid transparent;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .suggestion-btn:hover {
@@ -122,34 +121,33 @@
         .header {
             background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             color: white;
-            padding: 20px 32px;
+            padding: 16px 32px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h2 {
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 4px;
         }
 
         .header p {
-            font-size: 13px;
+            font-size: 12px;
             opacity: 0.9;
         }
 
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 32px;
+            padding: 20px 32px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
 
         .message {
             display: flex;
             gap: 12px;
             animation: slideIn 0.3s ease;
-            align-items: flex-start;
         }
 
         @keyframes slideIn {
@@ -168,12 +166,11 @@
         }
 
         .message-content {
-            max-width: 70%;
+            max-width: 75%;
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-wrap;
+            line-height: 1.5;
             word-wrap: break-word;
         }
 
@@ -187,6 +184,14 @@
             background: #f3f4f6;
             color: #1f2937;
             border-bottom-left-radius: 4px;
+            font-size: 14px;
+        }
+
+        .source-info {
+            font-size: 11px;
+            color: #0891b2;
+            margin-top: 6px;
+            font-style: italic;
         }
 
         .typing-indicator {
@@ -212,16 +217,12 @@
         }
 
         @keyframes typingAnimation {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-10px);
-            }
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
         }
 
         .input-area {
-            padding: 20px 32px;
+            padding: 16px 32px;
             border-top: 1px solid #e5e7eb;
             background: white;
         }
@@ -233,11 +234,11 @@
 
         .input-wrapper input {
             flex: 1;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .input-wrapper input:focus {
@@ -247,15 +248,15 @@
         }
 
         .send-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
+            font-size: 18px;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -266,54 +267,23 @@
             box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
         }
 
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         .input-hint {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 12px;
-        }
-
-        .doc-source {
             font-size: 11px;
-            color: #0891b2;
+            color: #9ca3af;
             margin-top: 8px;
-            font-style: italic;
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .message-content {
-                max-width: 85%;
-            }
-
-            .chat-container {
-                padding: 16px;
-            }
-
-            .header {
-                padding: 16px;
-            }
-
-            .input-area {
-                padding: 16px;
-            }
+            .sidebar { display: none; }
+            .message-content { max-width: 85%; }
+            .chat-container { padding: 16px; }
+            .header { padding: 12px; }
+            .input-area { padding: 12px; }
         }
 
         .sidebar-content::-webkit-scrollbar,
         .chat-container::-webkit-scrollbar {
             width: 6px;
-        }
-
-        .sidebar-content::-webkit-scrollbar-track,
-        .chat-container::-webkit-scrollbar-track {
-            background: transparent;
         }
 
         .sidebar-content::-webkit-scrollbar-thumb,
@@ -328,28 +298,28 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">📚</div>
+                    <div class="logo-icon">💬</div>
                     <div class="logo-text">
                         <h1>R360</h1>
-                        <p>Consulta IA</p>
+                        <p>Asistente IA</p>
                     </div>
                 </div>
             </div>
 
             <div class="sidebar-content" id="suggestionsContainer">
-                <div class="suggestions-title">Preguntas Rápidas</div>
+                <div class="suggestions-title">Preguntas</div>
             </div>
 
             <div class="sidebar-footer">
-                <p>🚀 Búsqueda Inteligente + IA</p>
-                <p style="margin-top: 8px;">Respuestas Conversacionales</p>
+                <p>🚀 Búsqueda Inteligente</p>
+                <p style="margin-top: 8px;">Respuestas Detalladas</p>
             </div>
         </div>
 
         <div class="main">
             <div class="header">
-                <h2>🤖 Asistente R360 Inteligente</h2>
-                <p>Pregúntame natural sobre Servicio, Ventas, Mercadeo, Fabrica o Administrador</p>
+                <h2>🤖 R360 Inteligente</h2>
+                <p>Pregúntame natural sobre cualquier proceso</p>
             </div>
 
             <div class="chat-container" id="chatContainer"></div>
@@ -359,14 +329,12 @@
                     <input 
                         type="text" 
                         id="messageInput" 
-                        placeholder="Cuéntame sobre las fases del servicio..."
+                        placeholder="Ej: Cuéntame en detalle cómo es la fase de planificación..."
                         onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
-                    <button class="send-btn" onclick="sendMessage()" id="sendBtn">✉️</button>
+                    <button class="send-btn" onclick="sendMessage()">➤</button>
                 </div>
-                <div class="input-hint">
-                    💡 Búsqueda automática en documentos + respuesta inteligente
-                </div>
+                <div class="input-hint">💡 Pregunta natural, búsqueda inteligente, respuestas detalladas</div>
             </div>
         </div>
     </div>
@@ -391,176 +359,197 @@
             mostrarSaludo();
         }
 
-        // Datos por defecto
         function getDefaultData() {
             return {
                 "documentos": [
                     {
                         "id": "servicio",
                         "nombre": "R360 Servicio",
+                        "contenido_completo": "El proceso de servicio R360 consta de 5 fases: Planificación (3-5 días), Ejecución (1-4 semanas), Control de Calidad (2-5 días), Entrega y Seguimiento.",
                         "qa_pairs": [
                             {
-                                "pregunta": "¿Cuáles son las fases del servicio?",
-                                "respuesta": "El proceso de servicio R360 tiene las siguientes fases:\n\n1. **Planificación** - Análisis de necesidades del cliente\n2. **Ejecución** - Implementación del servicio\n3. **Control de Calidad** - Validación de estándares\n4. **Entrega** - Presentación al cliente\n5. **Seguimiento** - Asistencia post-servicio",
-                                "palabras_clave": ["fases", "etapas", "proceso", "planificación", "ejecución", "calidad", "entrega", "seguimiento", "fase de planificación", "fase de ejecución"]
-                            },
-                            {
-                                "pregunta": "¿Cuál es el proceso de atención al cliente?",
-                                "respuesta": "El proceso de atención al cliente en R360 Servicio incluye:\n\n✓ Recepción de solicitud\n✓ Análisis de requerimiento\n✓ Asignación de recursos\n✓ Ejecución del servicio\n✓ Validación con cliente\n✓ Cierre y seguimiento\n\nTiempo de respuesta: SLA de 24 horas",
-                                "palabras_clave": ["atención", "cliente", "proceso", "servicio", "sla", "respuesta", "solicitud"]
-                            },
-                            {
-                                "pregunta": "¿Cuáles son los estándares de calidad?",
-                                "respuesta": "Los estándares de calidad de R360 Servicio incluyen:\n\n📊 **Precisión:** 99.5% en entregas\n⏱️ **Puntualidad:** 100% dentro del SLA\n✓ **Conformidad:** Cumplimiento de especificaciones\n🔍 **Auditoría:** Revisiones periódicas",
-                                "palabras_clave": ["calidad", "estándares", "normas", "sla", "precisión", "puntualidad", "conformidad"]
+                                "pregunta": "fases del servicio",
+                                "respuesta": "Las 5 fases son: 1) Planificación - Análisis de necesidades, 2) Ejecución - Implementación, 3) Control de Calidad - Validación, 4) Entrega - Presentación, 5) Seguimiento - Post-servicio."
                             }
                         ]
                     },
                     {
                         "id": "ventas",
                         "nombre": "R360 Ventas",
-                        "qa_pairs": [
-                            {
-                                "pregunta": "¿Cómo es el proceso de ventas?",
-                                "respuesta": "El proceso de ventas R360 consta de:\n\n1. **Prospección** - Identificación de leads\n2. **Contacto inicial** - Primera llamada o reunión\n3. **Presentación** - Demostración del producto\n4. **Propuesta** - Envío de cotización\n5. **Negociación** - Ajuste de términos\n6. **Cierre** - Firma de contrato\n7. **Implementación** - Inicio del servicio",
-                                "palabras_clave": ["proceso", "etapas", "venta", "ventas", "prospección", "contacto", "propuesta", "negociación", "cierre", "implementación"]
-                            },
-                            {
-                                "pregunta": "¿Cómo se cierra una venta?",
-                                "respuesta": "Para cerrar una venta exitosa:\n\n✓ Confirmar necesidades del cliente\n✓ Presentar propuesta clara\n✓ Resolver objeciones\n✓ Establecer términos de pago\n✓ Preparar documentación\n✓ Obtener firma\n✓ Confirmar detalles de implementación",
-                                "palabras_clave": ["cierre", "venta", "negociación", "firma", "contrato", "términos", "cerrar"]
-                            }
-                        ]
+                        "contenido_completo": "Proceso de ventas: Prospección, Contacto, Presentación, Propuesta, Negociación, Cierre e Implementación. Dura 30-45 días.",
+                        "qa_pairs": []
                     },
                     {
                         "id": "mercadeo",
                         "nombre": "R360 Mercadeo",
-                        "qa_pairs": [
-                            {
-                                "pregunta": "¿Cuál es la estrategia de mercadeo?",
-                                "respuesta": "Estrategia de Mercadeo R360:\n\n🎯 **Posicionamiento:** Lider en soluciones empresariales\n👥 **Público Objetivo:** Empresas B2B (50-1000 empleados)\n📱 **Canales:** Digital (50%), Presencial (30%), Networking (20%)\n📊 **Campañas:** Lead generation, Awareness, Retention",
-                                "palabras_clave": ["estrategia", "mercadeo", "marketing", "campaña", "posicionamiento", "público", "canales", "digital"]
-                            }
-                        ]
+                        "contenido_completo": "Estrategia B2B enfocada en empresas medianas. Canales: 50% digital, 30% presencial, 20% networking.",
+                        "qa_pairs": []
                     },
                     {
                         "id": "fabrica",
                         "nombre": "R360 Fabrica",
-                        "qa_pairs": [
-                            {
-                                "pregunta": "¿Cómo funciona la producción?",
-                                "respuesta": "Proceso de Producción R360:\n\n1. **Recepción de Orden** - Planning\n2. **Abastecimiento** - Compra de materiales\n3. **Preparación** - Setup de línea\n4. **Fabricación** - Proceso manufacturero\n5. **QC Intermedio** - Inspección\n6. **Acabado** - Embalaje\n7. **QC Final** - Inspección 100%\n8. **Despacho** - Entrega",
-                                "palabras_clave": ["producción", "manufactura", "proceso", "fabrica", "orden", "materiales", "calidad", "despacho", "fabricación"]
-                            }
-                        ]
+                        "contenido_completo": "8 fases de producción: Recepción, Abastecimiento, Preparación, Fabricación, QC, Acabado, QC Final, Despacho. 500 unidades/día.",
+                        "qa_pairs": []
                     },
                     {
                         "id": "administrador",
                         "nombre": "Super Administrador",
-                        "qa_pairs": [
-                            {
-                                "pregunta": "¿Cómo gestiono propiedades?",
-                                "respuesta": "Gestión de Propiedades:\n\n📋 **Registro:** Información de propiedad\n👤 **Inquilinos:** Perfiles, contratos\n💰 **Alquiler:** Cobranza, pagos, recordatorios\n🔧 **Mantenimiento:** Solicitudes, órdenes\n📊 **Reportes:** Ocupación, ingresos, gastos",
-                                "palabras_clave": ["gestión", "propiedades", "administración", "inquilino", "alquiler", "cobranza", "mantenimiento"]
-                            }
-                        ]
+                        "contenido_completo": "Plataforma para gestión de propiedades, inquilinos, cobranza, mantenimiento, reportes. Unlimited propiedades.",
+                        "qa_pairs": []
                     }
-                ],
-                "preguntas_rapidas": [
-                    "¿Cuáles son las fases del servicio?",
-                    "¿Cómo es el proceso de ventas?",
-                    "¿Cuál es la estrategia de mercadeo?",
-                    "¿Cómo funciona la producción?",
-                    "¿Cómo gestiono propiedades?"
                 ]
             };
         }
 
-        // Mostrar saludo inicial (estilo paisa)
         function mostrarSaludo() {
             const saludos = [
-                "¡Ey, bienvenido! Soy su asistente R360. Cuénteme qué necesita, que yo le ayudo de una.",
-                "¿Qué más, parcero? Aquí ando para ayudarle en lo que necesite de R360.",
-                "¡Hola! Soy el asistente de consulta R360. Pregúnteme lo que quiera y le cuento al toque.",
-                "Hermano, yo le ayudo con todo lo de R360. ¿Qué necesita saber hoy?"
+                "¡Ey, bienvenido! Soy el asistente de R360. Pregúntame lo que necesites y te ayudo al toque.",
+                "¿Qué más, parcero? Aquí estoy para ayudarte con cualquier cosa de R360.",
+                "¡Hola! Soy el asistente inteligente de R360. Cuéntame qué necesitas saber.",
+                "Hermano, bienvenido. Yo respondo todas tus preguntas sobre R360. ¿Qué quieres saber?"
             ];
-            
-            const saludo = saludos[Math.floor(Math.random() * saludos.length)];
-            addMessage(saludo, 'bot');
+            addMessage(saludos[Math.floor(Math.random() * saludos.length)], 'bot');
         }
 
-        // Cargar preguntas rápidas
         function cargarPreguntasRapidas() {
             const container = document.getElementById('suggestionsContainer');
-            const title = container.querySelector('.suggestions-title');
-            
+            const preguntas = [
+                "¿Cuáles son las fases?",
+                "Detalle del proceso",
+                "¿Cómo comienza?",
+                "Paso a paso",
+                "¿Cuánto tarda?",
+                "Explícame todo"
+            ];
+
             const oldButtons = container.querySelectorAll('.suggestion-btn');
             oldButtons.forEach(btn => btn.remove());
 
-            documentosData.preguntas_rapidas.forEach(pregunta => {
+            preguntas.forEach(pregunta => {
                 const btn = document.createElement('button');
                 btn.className = 'suggestion-btn';
                 btn.textContent = pregunta;
-                btn.onclick = () => setQuestion(pregunta);
+                btn.onclick = () => {
+                    document.getElementById('messageInput').value = pregunta;
+                    document.getElementById('messageInput').focus();
+                    sendMessage();
+                };
                 container.appendChild(btn);
             });
         }
 
-        // Buscar documento relevante
-        function buscarDocumento(pregunta) {
+        // Búsqueda inteligente mejorada
+        function buscarContenido(pregunta) {
             const preguntaLower = pregunta.toLowerCase();
             let mejorCoincidencia = null;
-            let maxCoincidencias = 0;
+            let maxScore = 0;
 
             documentosData.documentos.forEach(doc => {
-                doc.qa_pairs.forEach(qa => {
-                    let coincidencias = 0;
-                    qa.palabras_clave.forEach(palabra => {
-                        if (preguntaLower.includes(palabra)) {
-                            coincidencias++;
+                let score = 0;
+
+                // Buscar en contenido completo
+                if (doc.contenido_completo) {
+                    const contenidoLower = doc.contenido_completo.toLowerCase();
+                    const palabrasPregunta = preguntaLower.split(' ');
+                    
+                    palabrasPregunta.forEach(palabra => {
+                        if (palabra.length > 2) { // Ignorar palabras muy cortas
+                            if (contenidoLower.includes(palabra)) {
+                                score += 2;
+                            }
                         }
                     });
+                }
 
-                    if (coincidencias > maxCoincidencias) {
-                        maxCoincidencias = coincidencias;
-                        mejorCoincidencia = { doc, qa, coincidencias };
-                    }
-                });
+                // Buscar en Q&A pairs
+                if (doc.qa_pairs) {
+                    doc.qa_pairs.forEach(qa => {
+                        const palabrasPregunta = preguntaLower.split(' ');
+                        palabrasPregunta.forEach(palabra => {
+                            if (qa.pregunta && qa.pregunta.toLowerCase().includes(palabra)) {
+                                score += 3;
+                            }
+                            if (qa.respuesta && qa.respuesta.toLowerCase().includes(palabra)) {
+                                score += 2;
+                            }
+                        });
+                    });
+                }
+
+                // Buscar por nombre del documento
+                if (doc.nombre.toLowerCase().includes(preguntaLower)) {
+                    score += 5;
+                }
+
+                if (score > maxScore) {
+                    maxScore = score;
+                    mejorCoincidencia = { doc, score };
+                }
             });
 
-            return mejorCoincidencia;
+            return maxScore > 0 ? mejorCoincidencia : null;
         }
 
-        // Generar respuesta conversacional
-        function generarRespuestaConversacional(pregunta, contexto) {
-            const palabrasIniciales = [
-                "Dale, ahí voy. ",
-                "Claro que sí. ",
-                "Ey, acá está. ",
-                "Vea, esto es lo que tengo: ",
-                "Perfecto, le cuento: ",
-                "Listo, escúcheme: "
+        // Generar respuesta natural
+        function generarRespuesta(pregunta, doc) {
+            const preguntaLower = pregunta.toLowerCase();
+            
+            // Detectar si pide detalle
+            const pideDetalle = preguntaLower.includes('detalle') || 
+                               preguntaLower.includes('explica') || 
+                               preguntaLower.includes('paso a paso') ||
+                               preguntaLower.includes('en profundidad') ||
+                               preguntaLower.includes('completo');
+
+            const iniciadores = [
+                "Dale, acá te cuento. ",
+                "Claro, vea. ",
+                "Perfectamente. ",
+                "Listo, escúcheme. ",
+                "Ey, esto es lo que tengo: "
             ];
 
-            const conectores = [
-                "\nBasado en los documentos R360, ",
-                "\nEsto es lo que dice el documento: ",
-                "\nSegún la información que tenemos, ",
-                "\nAcá está la información que necesita: "
-            ];
+            const inicio = iniciadores[Math.floor(Math.random() * iniciadores.length)];
 
-            const inicio = palabrasIniciales[Math.floor(Math.random() * palabrasIniciales.length)];
-            const conector = conectores[Math.floor(Math.random() * conectores.length)];
-
-            if (contexto) {
-                return inicio + conector + contexto;
-            } else {
-                return "Hmm, eso sí es una buena pregunta, pero no me aparece en los libros que tengo. ¿Me pregunta de otra cosa?";
+            // Si pide detalle, usar contenido completo
+            if (pideDetalle && doc.contenido_completo) {
+                return inicio + doc.contenido_completo;
             }
+
+            // Si hay Q&A que coincida, usarlo
+            if (doc.qa_pairs && doc.qa_pairs.length > 0) {
+                let mejorQA = null;
+                let maxMatch = 0;
+
+                doc.qa_pairs.forEach(qa => {
+                    let matches = 0;
+                    const palabrasPregunta = preguntaLower.split(' ');
+                    palabrasPregunta.forEach(palabra => {
+                        if (qa.pregunta.toLowerCase().includes(palabra)) {
+                            matches += 2;
+                        }
+                    });
+                    
+                    if (matches > maxMatch) {
+                        maxMatch = matches;
+                        mejorQA = qa;
+                    }
+                });
+
+                if (mejorQA && maxMatch > 0) {
+                    return inicio + mejorQA.respuesta;
+                }
+            }
+
+            // Fallback: usar contenido completo
+            if (doc.contenido_completo) {
+                return inicio + doc.contenido_completo;
+            }
+
+            return null;
         }
 
-        // Enviar mensaje
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
             
@@ -574,34 +563,26 @@
             setTimeout(() => {
                 removeTypingIndicator();
                 
-                // Buscar en documentos
-                const resultado = buscarDocumento(message);
+                const resultado = buscarContenido(message);
                 
-                if (resultado && resultado.coincidencias > 0) {
-                    // Generar respuesta conversacional
-                    const respuesta = generarRespuestaConversacional(message, resultado.qa.respuesta);
-                    addMessage(respuesta, 'bot');
-                    
-                    // Mostrar fuente del documento
-                    const chatContainer = document.getElementById('chatContainer');
-                    const lastMessage = chatContainer.lastChild;
-                    const sourceDiv = document.createElement('div');
-                    sourceDiv.className = 'doc-source';
-                    sourceDiv.textContent = `📖 Información de: ${resultado.doc.nombre}`;
-                    lastMessage.appendChild(sourceDiv);
+                if (resultado && resultado.score > 0) {
+                    const respuesta = generarRespuesta(message, resultado.doc);
+                    if (respuesta) {
+                        addMessageWithSource(respuesta, resultado.doc.nombre);
+                    } else {
+                        addMessage("Hmm, no pude generar una respuesta apropiada. ¿Preguntame de otra forma?", 'bot');
+                    }
                 } else {
-                    // Respuesta cuando no encuentra
-                    const respuestaDefault = [
-                        "Ey, eso no lo tengo en los documentos. ¿Pregúnteme de Servicio, Ventas, Mercadeo, Fabrica o Administrador?",
-                        "Parcero, eso no sale en lo que tengo. ¿Algo de los documentos R360?",
-                        "Hmm, eso sí no me aparece. ¿Algo más que necesite saber?"
+                    const respuestasDefault = [
+                        "Ey, eso no lo tengo bien documentado. ¿Pregúntame de Servicio, Ventas, Mercadeo, Fabrica o Administrador?",
+                        "Parcero, eso sí no sale en los documentos. ¿Algo de R360?",
+                        "Hmm, eso está fuera de mi alcance. ¿Pregúntame de otro tema?"
                     ];
-                    addMessage(respuestaDefault[Math.floor(Math.random() * respuestaDefault.length)], 'bot');
+                    addMessage(respuestasDefault[Math.floor(Math.random() * respuestasDefault.length)], 'bot');
                 }
-            }, 800);
+            }, 600);
         }
 
-        // Agregar mensaje
         function addMessage(text, sender) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
@@ -616,7 +597,25 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // Mostrar indicador de escritura
+        function addMessageWithSource(text, docName) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            const sourceDiv = document.createElement('div');
+            sourceDiv.className = 'source-info';
+            sourceDiv.textContent = `📖 Fuente: ${docName}`;
+            
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(sourceDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
         function showTypingIndicator() {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
@@ -637,13 +636,6 @@
             if (indicator) indicator.remove();
         }
 
-        function setQuestion(question) {
-            document.getElementById('messageInput').value = question;
-            document.getElementById('messageInput').focus();
-            sendMessage();
-        }
-
-        // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
             loadDocumentsData();
             document.getElementById('messageInput').focus();
