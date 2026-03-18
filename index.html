@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R360 - Asistente Inteligente</title>
+    <title>R360 - Asistente de Consulta</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #f0fdfa 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #f8f9fa;
             height: 100vh;
             overflow: hidden;
         }
@@ -24,91 +24,84 @@
         }
 
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: white;
-            border-right: 1px solid #e5e7eb;
+            border-right: 1px solid #e0e0e0;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .sidebar-header {
-            padding: 24px;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .logo-text h1 {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1f2937;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
 
         .logo-text p {
-            font-size: 12px;
-            color: #9ca3af;
+            font-size: 11px;
+            color: #999;
             margin-top: 2px;
         }
 
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px;
         }
 
         .suggestions-title {
             font-weight: 600;
-            color: #4b5563;
-            margin-bottom: 12px;
-            font-size: 12px;
+            color: #666;
+            font-size: 11px;
             text-transform: uppercase;
+            margin-bottom: 10px;
+            padding: 0 8px;
+            letter-spacing: 0.5px;
         }
 
         .suggestion-btn {
             width: 100%;
             text-align: left;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #f3f4f6;
-            border: none;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
             border-radius: 6px;
-            color: #374151;
+            color: #333;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-            line-height: 1.2;
+            transition: all 0.2s;
+            line-height: 1.3;
         }
 
         .suggestion-btn:hover {
-            background: #e0f2fe;
-            color: #0369a1;
-            border-left-color: #0891b2;
-        }
-
-        .sidebar-footer {
-            padding: 16px;
-            border-top: 1px solid #e5e7eb;
-            font-size: 11px;
-            color: #9ca3af;
+            background: #e8f5f5;
+            border-color: #0d9488;
+            color: #0d9488;
         }
 
         .main {
@@ -121,12 +114,13 @@
         .header {
             background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
             color: white;
-            padding: 16px 32px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .header h2 {
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
@@ -138,7 +132,7 @@
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 32px;
+            padding: 20px 24px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -166,7 +160,7 @@
         }
 
         .message-content {
-            max-width: 75%;
+            max-width: 70%;
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 14px;
@@ -175,37 +169,39 @@
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            background: #0d9488;
             color: white;
             border-bottom-right-radius: 4px;
         }
 
         .message.bot .message-content {
-            background: #f3f4f6;
-            color: #1f2937;
+            background: #f5f5f5;
+            color: #333;
             border-bottom-left-radius: 4px;
-            font-size: 14px;
         }
 
-        .source-info {
+        .source-badge {
             font-size: 11px;
-            color: #0891b2;
+            color: #0d9488;
             margin-top: 6px;
             font-style: italic;
         }
 
-        .typing-indicator {
+        .typing {
             display: flex;
             gap: 4px;
             padding: 8px 12px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            width: fit-content;
         }
 
         .typing-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #9ca3af;
-            animation: typingAnimation 1.4s infinite;
+            background: #999;
+            animation: pulse 1.4s infinite;
         }
 
         .typing-dot:nth-child(2) {
@@ -216,14 +212,18 @@
             animation-delay: 0.4s;
         }
 
-        @keyframes typingAnimation {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
+        @keyframes pulse {
+            0%, 60%, 100% {
+                opacity: 0.5;
+            }
+            30% {
+                opacity: 1;
+            }
         }
 
         .input-area {
-            padding: 16px 32px;
-            border-top: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            border-top: 1px solid #e0e0e0;
             background: white;
         }
 
@@ -235,15 +235,16 @@
         .input-wrapper input {
             flex: 1;
             padding: 10px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #d0d0d0;
             border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s;
+            font-family: inherit;
+            transition: all 0.2s;
         }
 
         .input-wrapper input:focus {
             outline: none;
-            border-color: #0891b2;
+            border-color: #0d9488;
             box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
         }
 
@@ -255,41 +256,34 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
         }
 
-        .send-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+        .send-btn:hover {
+            transform: scale(1.05);
         }
 
         .input-hint {
             font-size: 11px;
-            color: #9ca3af;
+            color: #999;
             margin-top: 8px;
+        }
+
+        .sidebar-content::-webkit-scrollbar,
+        .chat-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb,
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
         }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .message-content { max-width: 85%; }
-            .chat-container { padding: 16px; }
-            .header { padding: 12px; }
-            .input-area { padding: 12px; }
-        }
-
-        .sidebar-content::-webkit-scrollbar,
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar-content::-webkit-scrollbar-thumb,
-        .chat-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
         }
     </style>
 </head>
@@ -301,25 +295,20 @@
                     <div class="logo-icon">💬</div>
                     <div class="logo-text">
                         <h1>R360</h1>
-                        <p>Asistente IA</p>
+                        <p>Consultas</p>
                     </div>
                 </div>
             </div>
 
             <div class="sidebar-content" id="suggestionsContainer">
-                <div class="suggestions-title">Preguntas</div>
-            </div>
-
-            <div class="sidebar-footer">
-                <p>🚀 Búsqueda Inteligente</p>
-                <p style="margin-top: 8px;">Respuestas Detalladas</p>
+                <div class="suggestions-title">Temas</div>
             </div>
         </div>
 
         <div class="main">
             <div class="header">
-                <h2>🤖 R360 Inteligente</h2>
-                <p>Pregúntame natural sobre cualquier proceso</p>
+                <h2>Asistente R360</h2>
+                <p>Pregunta sobre cualquier proceso o servicio</p>
             </div>
 
             <div class="chat-container" id="chatContainer"></div>
@@ -329,34 +318,33 @@
                     <input 
                         type="text" 
                         id="messageInput" 
-                        placeholder="Ej: Cuéntame en detalle cómo es la fase de planificación..."
+                        placeholder="Pregunta sobre procesos, servicio, ventas..."
                         onkeypress="if(event.key === 'Enter') sendMessage()"
                     >
                     <button class="send-btn" onclick="sendMessage()">➤</button>
                 </div>
-                <div class="input-hint">💡 Pregunta natural, búsqueda inteligente, respuestas detalladas</div>
+                <div class="input-hint">Busca información en documentos reales sin inventar</div>
             </div>
         </div>
     </div>
 
     <script>
-        let documentosData = null;
+        let documentsData = null;
 
-        // Cargar metadata desde GitHub
-        async function loadDocumentsData() {
+        async function loadDocuments() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/eduardobulaortega2019/index/main/documentos-metadata.json');
+                const response = await fetch('https://raw.githubusercontent.com/eduardobulaortega2019/index/main/documentos-base-datos.json');
                 if (response.ok) {
-                    documentosData = await response.json();
+                    documentsData = await response.json();
                 } else {
-                    documentosData = getDefaultData();
+                    documentsData = getDefaultData();
                 }
-            } catch (error) {
-                documentosData = getDefaultData();
+            } catch (e) {
+                documentsData = getDefaultData();
             }
 
-            cargarPreguntasRapidas();
-            mostrarSaludo();
+            loadSuggestions();
+            greeting();
         }
 
         function getDefaultData() {
@@ -365,188 +353,93 @@
                     {
                         "id": "servicio",
                         "nombre": "R360 Servicio",
-                        "contenido_completo": "El proceso de servicio R360 consta de 5 fases: Planificación (3-5 días), Ejecución (1-4 semanas), Control de Calidad (2-5 días), Entrega y Seguimiento.",
-                        "qa_pairs": [
+                        "secciones": [
                             {
-                                "pregunta": "fases del servicio",
-                                "respuesta": "Las 5 fases son: 1) Planificación - Análisis de necesidades, 2) Ejecución - Implementación, 3) Control de Calidad - Validación, 4) Entrega - Presentación, 5) Seguimiento - Post-servicio."
+                                "titulo": "Fases del Servicio",
+                                "contenido": "El proceso consta de 5 fases: 1) Planificación (3-5 días), 2) Ejecución (1-4 semanas), 3) Control de Calidad (2-5 días), 4) Entrega, 5) Seguimiento",
+                                "palabras_clave": ["fases", "etapas", "proceso", "servicio"]
                             }
                         ]
-                    },
-                    {
-                        "id": "ventas",
-                        "nombre": "R360 Ventas",
-                        "contenido_completo": "Proceso de ventas: Prospección, Contacto, Presentación, Propuesta, Negociación, Cierre e Implementación. Dura 30-45 días.",
-                        "qa_pairs": []
-                    },
-                    {
-                        "id": "mercadeo",
-                        "nombre": "R360 Mercadeo",
-                        "contenido_completo": "Estrategia B2B enfocada en empresas medianas. Canales: 50% digital, 30% presencial, 20% networking.",
-                        "qa_pairs": []
-                    },
-                    {
-                        "id": "fabrica",
-                        "nombre": "R360 Fabrica",
-                        "contenido_completo": "8 fases de producción: Recepción, Abastecimiento, Preparación, Fabricación, QC, Acabado, QC Final, Despacho. 500 unidades/día.",
-                        "qa_pairs": []
-                    },
-                    {
-                        "id": "administrador",
-                        "nombre": "Super Administrador",
-                        "contenido_completo": "Plataforma para gestión de propiedades, inquilinos, cobranza, mantenimiento, reportes. Unlimited propiedades.",
-                        "qa_pairs": []
                     }
                 ]
             };
         }
 
-        function mostrarSaludo() {
-            const saludos = [
-                "¡Ey, bienvenido! Soy el asistente de R360. Pregúntame lo que necesites y te ayudo al toque.",
-                "¿Qué más, parcero? Aquí estoy para ayudarte con cualquier cosa de R360.",
-                "¡Hola! Soy el asistente inteligente de R360. Cuéntame qué necesitas saber.",
-                "Hermano, bienvenido. Yo respondo todas tus preguntas sobre R360. ¿Qué quieres saber?"
-            ];
-            addMessage(saludos[Math.floor(Math.random() * saludos.length)], 'bot');
-        }
-
-        function cargarPreguntasRapidas() {
+        function loadSuggestions() {
             const container = document.getElementById('suggestionsContainer');
-            const preguntas = [
-                "¿Cuáles son las fases?",
-                "Detalle del proceso",
-                "¿Cómo comienza?",
-                "Paso a paso",
-                "¿Cuánto tarda?",
-                "Explícame todo"
-            ];
+            const temas = ['¿Cuáles son las fases?', 'Detalle de proceso', '¿Cómo comienza?', 'Paso a paso', '¿Cuánto tarda?', 'Explícame todo'];
+            
+            const oldBtns = container.querySelectorAll('.suggestion-btn');
+            oldBtns.forEach(btn => btn.remove());
 
-            const oldButtons = container.querySelectorAll('.suggestion-btn');
-            oldButtons.forEach(btn => btn.remove());
-
-            preguntas.forEach(pregunta => {
+            temas.forEach(tema => {
                 const btn = document.createElement('button');
                 btn.className = 'suggestion-btn';
-                btn.textContent = pregunta;
+                btn.textContent = tema;
                 btn.onclick = () => {
-                    document.getElementById('messageInput').value = pregunta;
-                    document.getElementById('messageInput').focus();
+                    document.getElementById('messageInput').value = tema;
                     sendMessage();
                 };
                 container.appendChild(btn);
             });
         }
 
-        // Búsqueda inteligente mejorada
-        function buscarContenido(pregunta) {
-            const preguntaLower = pregunta.toLowerCase();
-            let mejorCoincidencia = null;
-            let maxScore = 0;
-
-            documentosData.documentos.forEach(doc => {
-                let score = 0;
-
-                // Buscar en contenido completo
-                if (doc.contenido_completo) {
-                    const contenidoLower = doc.contenido_completo.toLowerCase();
-                    const palabrasPregunta = preguntaLower.split(' ');
-                    
-                    palabrasPregunta.forEach(palabra => {
-                        if (palabra.length > 2) { // Ignorar palabras muy cortas
-                            if (contenidoLower.includes(palabra)) {
-                                score += 2;
-                            }
-                        }
-                    });
-                }
-
-                // Buscar en Q&A pairs
-                if (doc.qa_pairs) {
-                    doc.qa_pairs.forEach(qa => {
-                        const palabrasPregunta = preguntaLower.split(' ');
-                        palabrasPregunta.forEach(palabra => {
-                            if (qa.pregunta && qa.pregunta.toLowerCase().includes(palabra)) {
-                                score += 3;
-                            }
-                            if (qa.respuesta && qa.respuesta.toLowerCase().includes(palabra)) {
-                                score += 2;
-                            }
-                        });
-                    });
-                }
-
-                // Buscar por nombre del documento
-                if (doc.nombre.toLowerCase().includes(preguntaLower)) {
-                    score += 5;
-                }
-
-                if (score > maxScore) {
-                    maxScore = score;
-                    mejorCoincidencia = { doc, score };
-                }
-            });
-
-            return maxScore > 0 ? mejorCoincidencia : null;
+        function greeting() {
+            const saludos = [
+                "Hola, bienvenido. Soy el asistente de R360. Pregúntame lo que necesites saber.",
+                "¿Qué tal? Estoy aquí para ayudarte. Pregunta sobre cualquier proceso.",
+                "Bienvenido. Cuéntame qué necesitas saber sobre R360.",
+                "Hola. Pregúntame lo que quieras saber de nuestros servicios."
+            ];
+            addMessage(saludos[Math.floor(Math.random() * saludos.length)], 'bot');
         }
 
-        // Generar respuesta natural
-        function generarRespuesta(pregunta, doc) {
-            const preguntaLower = pregunta.toLowerCase();
+        function calculateSimilarity(pregunta, textoDoc) {
+            const palabrasPregunta = pregunta.toLowerCase().split(/\s+/);
+            const palabrasDoc = textoDoc.toLowerCase().split(/\s+/);
             
-            // Detectar si pide detalle
-            const pideDetalle = preguntaLower.includes('detalle') || 
-                               preguntaLower.includes('explica') || 
-                               preguntaLower.includes('paso a paso') ||
-                               preguntaLower.includes('en profundidad') ||
-                               preguntaLower.includes('completo');
+            let coincidencias = 0;
+            palabrasPregunta.forEach(p => {
+                if (p.length > 2 && palabrasDoc.some(d => d.includes(p) || p.includes(d))) {
+                    coincidencias++;
+                }
+            });
+            
+            return coincidencias / Math.max(palabrasPregunta.length, 1);
+        }
 
-            const iniciadores = [
-                "Dale, acá te cuento. ",
-                "Claro, vea. ",
-                "Perfectamente. ",
-                "Listo, escúcheme. ",
-                "Ey, esto es lo que tengo: "
-            ];
+        function searchInDocuments(pregunta) {
+            let mejorMatch = null;
+            let maxScore = 0;
 
-            const inicio = iniciadores[Math.floor(Math.random() * iniciadores.length)];
-
-            // Si pide detalle, usar contenido completo
-            if (pideDetalle && doc.contenido_completo) {
-                return inicio + doc.contenido_completo;
-            }
-
-            // Si hay Q&A que coincida, usarlo
-            if (doc.qa_pairs && doc.qa_pairs.length > 0) {
-                let mejorQA = null;
-                let maxMatch = 0;
-
-                doc.qa_pairs.forEach(qa => {
-                    let matches = 0;
-                    const palabrasPregunta = preguntaLower.split(' ');
-                    palabrasPregunta.forEach(palabra => {
-                        if (qa.pregunta.toLowerCase().includes(palabra)) {
-                            matches += 2;
-                        }
-                    });
-                    
-                    if (matches > maxMatch) {
-                        maxMatch = matches;
-                        mejorQA = qa;
+            documentsData.documentos.forEach(doc => {
+                doc.secciones.forEach(seccion => {
+                    const score = calculateSimilarity(pregunta, seccion.titulo + ' ' + seccion.contenido);
+                    if (score > maxScore) {
+                        maxScore = score;
+                        mejorMatch = {
+                            doc: doc.nombre,
+                            titulo: seccion.titulo,
+                            contenido: seccion.contenido,
+                            score: score
+                        };
                     }
                 });
+            });
 
-                if (mejorQA && maxMatch > 0) {
-                    return inicio + mejorQA.respuesta;
-                }
-            }
+            return maxScore > 0.3 ? mejorMatch : null;
+        }
 
-            // Fallback: usar contenido completo
-            if (doc.contenido_completo) {
-                return inicio + doc.contenido_completo;
-            }
+        function formatResponse(match) {
+            const conversationIntro = [
+                'Te comparto lo que encontré: ',
+                'Según la información que tengo: ',
+                'Esto es lo que dice el documento: ',
+                'Aquí está lo que buscabas: '
+            ];
 
-            return null;
+            const intro = conversationIntro[Math.floor(Math.random() * conversationIntro.length)];
+            return intro + '\n\n' + match.contenido;
         }
 
         async function sendMessage() {
@@ -558,86 +451,76 @@
             addMessage(message, 'user');
             input.value = '';
             
-            showTypingIndicator();
+            showTyping();
             
-            setTimeout(() => {
-                removeTypingIndicator();
-                
-                const resultado = buscarContenido(message);
-                
-                if (resultado && resultado.score > 0) {
-                    const respuesta = generarRespuesta(message, resultado.doc);
-                    if (respuesta) {
-                        addMessageWithSource(respuesta, resultado.doc.nombre);
-                    } else {
-                        addMessage("Hmm, no pude generar una respuesta apropiada. ¿Preguntame de otra forma?", 'bot');
-                    }
-                } else {
-                    const respuestasDefault = [
-                        "Ey, eso no lo tengo bien documentado. ¿Pregúntame de Servicio, Ventas, Mercadeo, Fabrica o Administrador?",
-                        "Parcero, eso sí no sale en los documentos. ¿Algo de R360?",
-                        "Hmm, eso está fuera de mi alcance. ¿Pregúntame de otro tema?"
-                    ];
-                    addMessage(respuestasDefault[Math.floor(Math.random() * respuestasDefault.length)], 'bot');
-                }
-            }, 600);
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            removeTyping();
+            
+            const match = searchInDocuments(message);
+            
+            if (match && match.score > 0.3) {
+                const response = formatResponse(match);
+                addMessageWithSource(response, match.doc);
+            } else {
+                addMessage("No encontré información específica sobre eso. Intenta preguntar sobre procesos, fases, servicio, ventas, mercadeo, fabrica o administración.", 'bot');
+            }
         }
 
         function addMessage(text, sender) {
-            const chatContainer = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
+            const container = document.getElementById('chatContainer');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
             
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            contentDiv.textContent = text;
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = text;
             
-            messageDiv.appendChild(contentDiv);
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            msgDiv.appendChild(content);
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
         }
 
-        function addMessageWithSource(text, docName) {
-            const chatContainer = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message bot';
+        function addMessageWithSource(text, doc) {
+            const container = document.getElementById('chatContainer');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message bot';
             
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            contentDiv.textContent = text;
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = text;
             
-            const sourceDiv = document.createElement('div');
-            sourceDiv.className = 'source-info';
-            sourceDiv.textContent = `📖 Fuente: ${docName}`;
+            const source = document.createElement('div');
+            source.className = 'source-badge';
+            source.textContent = `📖 Fuente: ${doc}`;
             
-            messageDiv.appendChild(contentDiv);
-            messageDiv.appendChild(sourceDiv);
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            msgDiv.appendChild(content);
+            msgDiv.appendChild(source);
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
         }
 
-        function showTypingIndicator() {
-            const chatContainer = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message bot';
-            messageDiv.id = 'typingIndicator';
+        function showTyping() {
+            const container = document.getElementById('chatContainer');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message bot';
+            msgDiv.id = 'typingMsg';
             
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'typing-indicator';
-            contentDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            const typing = document.createElement('div');
+            typing.className = 'typing';
+            typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
             
-            messageDiv.appendChild(contentDiv);
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            msgDiv.appendChild(typing);
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
         }
 
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) indicator.remove();
+        function removeTyping() {
+            const typing = document.getElementById('typingMsg');
+            if (typing) typing.remove();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadDocumentsData();
+            loadDocuments();
             document.getElementById('messageInput').focus();
         });
     </script>
